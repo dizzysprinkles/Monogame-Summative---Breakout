@@ -53,11 +53,40 @@ namespace Monogame_Summative___Breakout
 
         protected override void Update(GameTime gameTime)
         {
+            currentKeyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            if (screenState == Screen.Title)
+            {
+                if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                {
+                    screenState = Screen.Tutorial;
+                }
+            }
+            else if (screenState == Screen.Tutorial)
+            {
+                if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
+                {
+                    screenState = Screen.Main;
+                }
+            }
+            else if (screenState == Screen.Main)
+            {
+                if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                {
+                    screenState = Screen.End;
+                }
+            }
+            else
+            {
+            
+            }
 
+
+
+            
+            prevKeyboardState = currentKeyboardState;
             base.Update(gameTime);
         }
 
