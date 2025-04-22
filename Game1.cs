@@ -22,6 +22,7 @@ namespace Monogame_Summative___Breakout
         Screen screenState;
         Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
+        Ball ball;
 
         public Game1()
         {
@@ -39,6 +40,8 @@ namespace Monogame_Summative___Breakout
             _graphics.ApplyChanges();
 
             base.Initialize();
+
+            //ball = new Ball()
         }
 
         protected override void LoadContent()
