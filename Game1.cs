@@ -80,10 +80,11 @@ namespace Monogame_Summative___Breakout
             }
             else
             {
-            
+                if (currentKeyboardState.IsKeyDown(Keys.Q) && prevKeyboardState.IsKeyUp(Keys.Q))
+                {
+                    Exit();
+                }
             }
-
-
 
             
             prevKeyboardState = currentKeyboardState;
