@@ -27,27 +27,27 @@ namespace Monogame_Summative___Breakout
 
         public void Update()
         {
-            //_speed.X = 1;
-            //_speed.Y = 1;
-            //if (_location.X > _window.Width - _location.Width)
-            //{
-            //    _speed.X--;
-            //}
-            //else if (_location.X  < 0)
-            //{
-            //    _speed.X--;
-            //}
+            _speed.X = 1;
+            _speed.Y = 1;
+            if (_location.X > _window.Width - _location.Width)
+            {
+                _speed.X--;
+            }
+            else if (_location.X < 0)
+            {
+                _speed.X--;
+            }
 
-            //if (_location.Y > _window.Height - _location.Height)
-            //{
-            //    _speed.Y--;
-            //}
-            //else if (_location.Y < 0)
-            //{
-            //    _speed.Y--;
-            //}
+            if (_location.Y > _window.Height - _location.Height)
+            {
+                _speed.Y--;
+            }
+            else if (_location.Y < 0)
+            {
+                _speed.Y--;
+            }
 
-            //_location.Offset(_speed);
+            _location.Offset(_speed);
 
         }
 
