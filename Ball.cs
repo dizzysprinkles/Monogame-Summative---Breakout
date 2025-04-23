@@ -23,17 +23,19 @@ namespace Monogame_Summative___Breakout
             _window = window;
         }
 
-        public Vector2 Speed
+        //Have to fix offsetting speed - watch game to see why
+        public void Update(List<Rectangle> bricks) 
         {
-            get { return _speed; }
-            set { _speed = value; }
-        }
+            BounceVertical(bricks);
+            _location.Offset(0, _speed.Y); // apply seperate x and y speeds to detect collisions seperate (top/bottom = y) (left/right = x)
+            //BounceVertical(bricks);
 
-        public void Update(Rectangle bricks) //Need to change to list
-        {
-            Bounce(bricks);
+            BounceHorizontal(bricks);
+            _location.Offset(_speed.X, 0);
 
-            _location.Offset(_speed);
+            //BounceHorizontal(bricks);
+
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -41,16 +43,8 @@ namespace Monogame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-        public void Bounce(Rectangle bricks)
+        public void BounceVertical(List<Rectangle> bricks)
         {
-            if (_location.X > _window.Width - _location.Width)
-            {
-                _speed.X*=-1;
-            }
-            else if (_location.X < 0)
-            {
-                _speed.X*=-1;
-            }
 
             if (_location.Y > _window.Height - _location.Height )
             {
@@ -61,10 +55,35 @@ namespace Monogame_Summative___Breakout
                 _speed.Y*=-1;
             }
 
-            if (Intersects(bricks))
+            for (int i = 0; i < bricks.Count; i++) //might hit two bricks - both have to disappear  
             {
-                _speed.Y *= -1;
+                if (Intersects(bricks[i]))
+                {
+                    _speed.Y *= -1;
+                }
             }
+        }
+
+        public void BounceHorizontal(List<Rectangle>bricks)
+        {
+            if (_location.X > _window.Width - _location.Width)
+            {
+                _speed.X *= -1;
+            }
+            else if (_location.X < 0)
+            {
+                _speed.X *= -1;
+            }
+
+            for (int i = 0; i < bricks.Count; i++) //might hit two bricks - both have to disappear  
+            {
+                if (Intersects(bricks[i]))
+                {
+                    _speed.X *= -1;
+                }
+            }
+
+
         }
 
         public bool Intersects(Rectangle bricks)

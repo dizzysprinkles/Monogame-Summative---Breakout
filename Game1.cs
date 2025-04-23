@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
@@ -23,7 +24,11 @@ namespace Monogame_Summative___Breakout
         Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
+        Brick bricks;
         Vector2 ballSpeed;
+
+        List<Rectangle> brickRects;
+        List<Texture2D> brickTextures;
         
 
         public Game1()
@@ -35,11 +40,25 @@ namespace Monogame_Summative___Breakout
 
         protected override void Initialize()
         {
-            screenState = Screen.Title;
+            screenState = Screen.Main;  // NEED TO CHANGE
+
+            brickRects = new List<Rectangle>();
+            brickTextures = new List<Texture2D>();
+
             window = new Rectangle(0,0,800,600);
 
-            ballRect = new Rectangle(400, 100, 25, 25);
-            ballSpeed = new Vector2(1, 1);
+            ballRect = new Rectangle(400, 500, 25, 25);
+            ballSpeed = new Vector2(2, 2);
+
+
+            for (int x = 0; x < window.Width; x += 100)
+            {
+                for (int y = 0; y < 363; y += 33)
+                {
+                    brickRects.Add(new Rectangle(x, y, 100, 33));
+                }
+            }
+           
 
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.PreferredBackBufferWidth = window.Width;
@@ -48,11 +67,17 @@ namespace Monogame_Summative___Breakout
             base.Initialize();
 
             ball = new Ball(ballRect, ballSpeed, ballTexture, window);
+            bricks = new Brick(brickRects, brickTextures);
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            for (int i = 0; i < brickRects.Count; i++)
+            {
+                brickTextures.Add(Content.Load<Texture2D>("Images/brick_1"));
+            }
 
             titleBackgroundTexture = Content.Load<Texture2D>("Images/titleBackground");
             tutorialBackgroundTexture = Content.Load<Texture2D>("Images/tutorialBackground");
@@ -83,7 +108,7 @@ namespace Monogame_Summative___Breakout
             }
             else if (screenState == Screen.Main)
             {
-                ball.Update();
+                ball.Update(brickRects);
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     screenState = Screen.End;
@@ -119,6 +144,11 @@ namespace Monogame_Summative___Breakout
             {
                 
                 _spriteBatch.Draw(mainBackgroundTexture, window, Color.White);
+
+                for (int i = 0; i < brickRects.Count; i++)
+                {
+                    bricks.Draw(_spriteBatch);
+                }
 
                 ball.Draw(_spriteBatch);
             }
