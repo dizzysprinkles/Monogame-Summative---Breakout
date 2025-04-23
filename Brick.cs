@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,24 @@ namespace Monogame_Summative___Breakout
 {
     public class Brick
     {
-        private Rectangle _location;
+        private List<Rectangle> _locations;
+        private List<Texture2D> _textures;
+        private int _index;
 
+        public Brick(List<Rectangle> locations, List<Texture2D> textures)
+        {
+            _locations = locations;
+            _textures = textures;
+            _index = 0;
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < _locations.Count; i++)
+            {
+                spriteBatch.Draw(_textures[i], _locations[i], Color.White);
+            }
+           
+        }
     }
 }

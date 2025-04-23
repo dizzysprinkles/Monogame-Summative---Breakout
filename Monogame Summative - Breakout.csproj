@@ -11,6 +11,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Images\brick_2.png" />
+    <None Remove="Content\Images\brick_3.png" />
+    <None Remove="Content\Images\brick_4.png" />
+    <None Remove="Content\Images\brick_5.png" />
+    <None Remove="Content\Images\damaged_2.png" />
+    <None Remove="Content\Images\damaged_3.png" />
+    <None Remove="Content\Images\damaged_4.png" />
+    <None Remove="Content\Images\damaged_5.png" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
   </ItemGroup>
