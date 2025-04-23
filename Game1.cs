@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
+    //TODO - Fix ball collisions, add Colours to bricks, add damaged texture to bricks, test disappearing
     enum Screen
     {
         Title,

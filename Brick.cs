@@ -12,7 +12,7 @@ namespace Monogame_Summative___Breakout
     {
         private List<Rectangle> _locations;
         private List<Texture2D> _textures;
-        //private Color _color;
+        //private Color _color;  // Need to add random colour generation in draw so it's less monotone
         private Random _generator;
 
         public Brick(List<Rectangle> locations, List<Texture2D> textures)
