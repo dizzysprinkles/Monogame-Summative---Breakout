@@ -18,11 +18,13 @@ namespace Monogame_Summative___Breakout
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Rectangle window;
+        Rectangle window, ballRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
+        Vector2 ballSpeed;
+        
 
         public Game1()
         {
@@ -35,13 +37,17 @@ namespace Monogame_Summative___Breakout
         {
             screenState = Screen.Title;
             window = new Rectangle(0,0,800,600);
+
+            ballRect = new Rectangle(400, 100, 25, 25);
+            ballSpeed = new Vector2(1, 1);
+
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.ApplyChanges();
 
             base.Initialize();
 
-            //ball = new Ball()
+            ball = new Ball(ballRect, ballSpeed, ballTexture, window);
         }
 
         protected override void LoadContent()
@@ -52,6 +58,7 @@ namespace Monogame_Summative___Breakout
             tutorialBackgroundTexture = Content.Load<Texture2D>("Images/tutorialBackground");
             mainBackgroundTexture = Content.Load<Texture2D>("Images/mainBackground");
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
+            ballTexture = Content.Load<Texture2D>("Images/ball");
         }
 
         protected override void Update(GameTime gameTime)
@@ -76,6 +83,7 @@ namespace Monogame_Summative___Breakout
             }
             else if (screenState == Screen.Main)
             {
+                ball.Update();
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     screenState = Screen.End;
@@ -109,7 +117,10 @@ namespace Monogame_Summative___Breakout
             }
             else if (screenState == Screen.Main)
             {
+                
                 _spriteBatch.Draw(mainBackgroundTexture, window, Color.White);
+
+                ball.Draw(_spriteBatch);
             }
             else
             {

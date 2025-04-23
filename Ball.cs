@@ -23,32 +23,17 @@ namespace Monogame_Summative___Breakout
             _window = window;
         }
 
-        //Checks bounds; for collision detection w/window
-
-        public void Update()
+        public Vector2 Speed
         {
-            _speed.X = 1;
-            _speed.Y = 1;
-            if (_location.X > _window.Width - _location.Width)
-            {
-                _speed.X--;
-            }
-            else if (_location.X < 0)
-            {
-                _speed.X--;
-            }
+            get { return _speed; }
+            set { _speed = value; }
+        }
 
-            if (_location.Y > _window.Height - _location.Height)
-            {
-                _speed.Y--;
-            }
-            else if (_location.Y < 0)
-            {
-                _speed.Y--;
-            }
+        public void Update(Rectangle bricks) //Need to change to list
+        {
+            Bounce(bricks);
 
             _location.Offset(_speed);
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -56,9 +41,35 @@ namespace Monogame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-        public void Bounce()
+        public void Bounce(Rectangle bricks)
         {
+            if (_location.X > _window.Width - _location.Width)
+            {
+                _speed.X*=-1;
+            }
+            else if (_location.X < 0)
+            {
+                _speed.X*=-1;
+            }
 
+            if (_location.Y > _window.Height - _location.Height )
+            {
+                _speed.Y*=-1;
+            }
+            else if (_location.Y < 0)
+            {
+                _speed.Y*=-1;
+            }
+
+            if (Intersects(bricks))
+            {
+                _speed.Y *= -1;
+            }
+        }
+
+        public bool Intersects(Rectangle bricks)
+        {
+            return _location.Intersects(bricks);
         }
 
     }
