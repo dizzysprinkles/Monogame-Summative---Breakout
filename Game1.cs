@@ -19,12 +19,13 @@ namespace Monogame_Summative___Breakout
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Rectangle window, ballRect;
+        Rectangle window, ballRect, paddleRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, paddleTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
         Brick bricks;
+        Paddle paddle;
         Vector2 ballSpeed;
 
         List<Rectangle> brickRects;
@@ -50,6 +51,8 @@ namespace Monogame_Summative___Breakout
             ballRect = new Rectangle(400, 500, 25, 25);
             ballSpeed = new Vector2(2, 2);
 
+            paddleRect = new Rectangle(300, 550, 100, 25);
+
             for (int x = 0; x < window.Width; x += 100)
             {
                 for (int y = 0; y < 363; y += 33)
@@ -66,6 +69,7 @@ namespace Monogame_Summative___Breakout
 
             ball = new Ball(ballRect, ballSpeed, ballTexture, window);
             bricks = new Brick(brickRects, brickTextures);
+            paddle = new Paddle(paddleRect, paddleTexture, window);
         }
 
         protected override void LoadContent()
@@ -82,6 +86,7 @@ namespace Monogame_Summative___Breakout
             mainBackgroundTexture = Content.Load<Texture2D>("Images/mainBackground");
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
             ballTexture = Content.Load<Texture2D>("Images/ball");
+            paddleTexture = Content.Load<Texture2D>("Images/paddle_1");
         }
 
         protected override void Update(GameTime gameTime)
@@ -106,7 +111,8 @@ namespace Monogame_Summative___Breakout
             }
             else if (screenState == Screen.Main)
             {
-                ball.Update(brickRects);
+                //ball.Update(brickRects);
+                paddle.Update(currentKeyboardState, prevKeyboardState);
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     screenState = Screen.End;
@@ -148,6 +154,7 @@ namespace Monogame_Summative___Breakout
                 }
 
                 ball.Draw(_spriteBatch);
+                paddle.Draw(_spriteBatch);
             }
             else
             {
