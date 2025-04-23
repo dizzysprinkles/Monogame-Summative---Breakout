@@ -50,7 +50,6 @@ namespace Monogame_Summative___Breakout
             ballRect = new Rectangle(400, 500, 25, 25);
             ballSpeed = new Vector2(2, 2);
 
-
             for (int x = 0; x < window.Width; x += 100)
             {
                 for (int y = 0; y < 363; y += 33)
@@ -59,7 +58,6 @@ namespace Monogame_Summative___Breakout
                 }
             }
            
-
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.ApplyChanges();
@@ -142,7 +140,6 @@ namespace Monogame_Summative___Breakout
             }
             else if (screenState == Screen.Main)
             {
-                
                 _spriteBatch.Draw(mainBackgroundTexture, window, Color.White);
 
                 for (int i = 0; i < brickRects.Count; i++)
