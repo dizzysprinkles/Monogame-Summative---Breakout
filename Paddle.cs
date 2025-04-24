@@ -31,10 +31,10 @@ namespace Monogame_Summative___Breakout
             set { _location = value; }
         }
 
-        public void Update(KeyboardState keyboardState, KeyboardState prevKeyboardState)
+        public void Update(KeyboardState keyboardState)
         {
             _speed = Vector2.Zero;
-            if (keyboardState.IsKeyDown(Keys.A))
+            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
             {
                 _speed.X = -2;
             }
@@ -43,7 +43,7 @@ namespace Monogame_Summative___Breakout
                 _speed.X += 2;
             }
 
-            else if (keyboardState.IsKeyDown(Keys.D))
+            else if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
             {
                 _speed.X = 2;
             }

@@ -29,7 +29,6 @@ namespace Monogame_Summative___Breakout
             set { _location = value; }
         }
 
-
         public void Update(List<Rectangle> bricks, Paddle paddle) 
         {
             bool bouncedX = false;
@@ -100,20 +99,10 @@ namespace Monogame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-      
-
         public bool Intersects(Rectangle bricks)
         {
             return _location.Intersects(bricks);
         }
-
-
-
-
-        //public List<Rectangle> GetCollidingBricks(List<Rectangle> bricks)
-        //{
-        //    return bricks.Where(brick => _location.Intersects(brick)).ToList();
-        //}
 
     }
 }

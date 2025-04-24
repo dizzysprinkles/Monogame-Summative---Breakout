@@ -107,7 +107,7 @@ namespace Monogame_Summative___Breakout
             currentKeyboardState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            //Title
             if (screenState == Screen.Title)
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
@@ -115,6 +115,7 @@ namespace Monogame_Summative___Breakout
                     screenState = Screen.Tutorial;
                 }
             }
+            //Tutorial
             else if (screenState == Screen.Tutorial)
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
@@ -122,16 +123,20 @@ namespace Monogame_Summative___Breakout
                     screenState = Screen.Main;
                 }
             }
+            //Main
             else if (screenState == Screen.Main)
             {
-                paddle.Update(currentKeyboardState, prevKeyboardState);
+                paddle.Update(currentKeyboardState);
                 ball.Update(brickRects, paddle);
+                
+           
                
-                if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
-                {
-                    screenState = Screen.End;
-                }
+                //if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                //{
+                //    screenState = Screen.End;
+                //}
             }
+            //End
             else
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Q) && prevKeyboardState.IsKeyUp(Keys.Q))
@@ -150,14 +155,17 @@ namespace Monogame_Summative___Breakout
             GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
 
+            //Title
             if (screenState == Screen.Title)
             {
                 _spriteBatch.Draw(titleBackgroundTexture, window, Color.White);
             }
+            //Tutorial
             else if (screenState == Screen.Tutorial)
             {
                 _spriteBatch.Draw(tutorialBackgroundTexture, window, Color.White);
             }
+            //Main
             else if (screenState == Screen.Main)
             {
                 _spriteBatch.Draw(mainBackgroundTexture, window, Color.White);
@@ -170,6 +178,7 @@ namespace Monogame_Summative___Breakout
                 ball.Draw(_spriteBatch);
                 paddle.Draw(_spriteBatch);
             }
+            //End
             else
             {
                 _spriteBatch.Draw(endBackgroundTexture, window, Color.White);
