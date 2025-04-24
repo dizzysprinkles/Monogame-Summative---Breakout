@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/InfiniteEnergy.ttf
+/copy:Fonts/InfiniteEnergy.ttf
+
 #begin Fonts/InstructionFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -22,6 +25,13 @@
 
 #begin Fonts/PixelPowerline.ttf
 /copy:Fonts/PixelPowerline.ttf
+
+#begin Fonts/TitleFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TitleFont.spritefont
 
 #begin Images/ball.png
 /importer:TextureImporter

@@ -31,6 +31,8 @@ namespace Monogame_Summative___Breakout
         Paddle paddle;
         Vector2 ballSpeed;
 
+        SpriteFont instructionFont, titleFont; 
+
         List<Rectangle> brickRects;
         List<Texture2D> brickTextures;
         List<Color> brickColours;
@@ -46,7 +48,7 @@ namespace Monogame_Summative___Breakout
 
         protected override void Initialize()
         {
-            screenState = Screen.Main;  // NEED TO CHANGE
+            screenState = Screen.Title;  // NEED TO CHANGE
 
             brickRects = new List<Rectangle>();
             brickTextures = new List<Texture2D>();
@@ -100,6 +102,9 @@ namespace Monogame_Summative___Breakout
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
             ballTexture = Content.Load<Texture2D>("Images/ball");
             paddleTexture = Content.Load<Texture2D>("Images/paddle_1");
+
+            titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
+            instructionFont = Content.Load<SpriteFont>("Fonts/InstructionFont");
         }
 
         protected override void Update(GameTime gameTime)
@@ -159,6 +164,10 @@ namespace Monogame_Summative___Breakout
             if (screenState == Screen.Title)
             {
                 _spriteBatch.Draw(titleBackgroundTexture, window, Color.White);
+
+                _spriteBatch.DrawString(titleFont, "Breakout", new Vector2(20, 10), Color.White);
+                _spriteBatch.DrawString(instructionFont, "Press [something] to go to the TUTORIAL", new Vector2(20, 500), Color.LightSeaGreen);
+                _spriteBatch.DrawString(instructionFont, "Press [something] to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
             }
             //Tutorial
             else if (screenState == Screen.Tutorial)

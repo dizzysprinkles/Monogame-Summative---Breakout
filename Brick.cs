@@ -23,6 +23,23 @@ namespace Monogame_Summative___Breakout
             _colours = colours;
         }
 
+        public List<Rectangle> Bounds
+        {
+            get { return _locations; }
+            set { _locations = value; }
+        }
+
+        public List<Texture2D> Textures
+        {
+            get{ return _textures; }
+            set { _textures = value; }
+        }
+
+        public List<Color> Colours
+        {
+            get; set;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < _locations.Count; i++)
