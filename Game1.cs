@@ -112,7 +112,9 @@ namespace Monogame_Summative___Breakout
             }
             else if (screenState == Screen.Main)
             {
-                //ball.Update(brickRects);
+                ball.Update(brickRects);
+   
+
                 paddle.Update(currentKeyboardState, prevKeyboardState);
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {

@@ -23,18 +23,62 @@ namespace Monogame_Summative___Breakout
             _window = window;
         }
 
-        //Have to fix offsetting speed - watch game to see why
+        public Rectangle Bounds
+        {
+            get { return _location; }
+            set { _location = value; }
+        }
+
+
         public void Update(List<Rectangle> bricks) 
         {
-            BounceVertical(bricks);
-            _location.Offset(0, _speed.Y); // apply seperate x and y speeds to detect collisions seperate (top/bottom = y) (left/right = x)
-            //BounceVertical(bricks);
+            bool bouncedX = false;
+            bool bouncedY = false;
 
-            BounceHorizontal(bricks);
-            _location.Offset(_speed.X, 0);
+            //Check vertical movement
+            Rectangle futureY = _location;
+            futureY.Offset(0, (int)_speed.Y);
 
-            //BounceHorizontal(bricks);
+            foreach (Rectangle brick in bricks)
+            {
+                if (futureY.Intersects(brick))
+                {
+                    bouncedY = true;
+                    break;
+                }
+            }
 
+            if (futureY.Bottom > _window.Bottom || futureY.Top < 0)
+                bouncedY = true;
+
+            if (bouncedY)
+                _speed.Y *= -1;
+
+            _location.Offset(0, (int)_speed.Y); // Only move after checking
+
+
+            //Check horizontal movement
+            Rectangle futureX = _location;
+            futureX.Offset((int)_speed.X, 0);
+
+            foreach (Rectangle brick in bricks)
+            {
+                if (futureX.Intersects(brick))
+                {
+                    bouncedX = true;
+                    break;
+                }
+            }
+
+            if (futureX.Right > _window.Right || futureX.Left < 0)
+                bouncedX = true;
+
+            if (bouncedX)
+            {
+                _speed.X *= -1;
+            }
+
+            _location.Offset((int)_speed.X, 0); // Only move after checking
 
         }
 
@@ -43,53 +87,33 @@ namespace Monogame_Summative___Breakout
             spriteBatch.Draw(_texture, _location, Color.White);
         }
 
-        public void BounceVertical(List<Rectangle> bricks)
-        {
-
-            if (_location.Y > _window.Height - _location.Height )
-            {
-                _speed.Y*=-1;
-            }
-            else if (_location.Y < 0)
-            {
-                _speed.Y*=-1;
-            }
-
-            for (int i = 0; i < bricks.Count; i++) //might hit two bricks - both have to disappear  
-            {
-                if (Intersects(bricks[i]))
-                {
-                    _speed.Y *= -1;
-                }
-            }
-        }
-
-        public void BounceHorizontal(List<Rectangle>bricks)
-        {
-            if (_location.X > _window.Width - _location.Width)
-            {
-                _speed.X *= -1;
-            }
-            else if (_location.X < 0)
-            {
-                _speed.X *= -1;
-            }
-
-            for (int i = 0; i < bricks.Count; i++) //might hit two bricks - both have to disappear  
-            {
-                if (Intersects(bricks[i]))
-                {
-                    _speed.X *= -1;
-                }
-            }
-
-
-        }
+      
 
         public bool Intersects(Rectangle bricks)
         {
             return _location.Intersects(bricks);
         }
+
+        //public void RemoveBricks(List<Rectangle> bricks)
+        //{
+        //    for (int i = 0; i < bricks.Count; i++)
+        //    {
+        //        if (Intersects(bricks[i]))
+        //        {
+        //            bricks.RemoveAt(i);
+        //            i--;
+
+        //        }
+        //    }
+        //}
+
+
+
+
+        //public List<Rectangle> GetCollidingBricks(List<Rectangle> bricks)
+        //{
+        //    return bricks.Where(brick => _location.Intersects(brick)).ToList();
+        //}
 
     }
 }
