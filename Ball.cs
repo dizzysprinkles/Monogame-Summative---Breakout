@@ -30,7 +30,7 @@ namespace Monogame_Summative___Breakout
         }
 
 
-        public void Update(List<Rectangle> bricks) 
+        public void Update(List<Rectangle> bricks, Paddle paddle) 
         {
             bool bouncedX = false;
             bool bouncedY = false;
@@ -51,10 +51,17 @@ namespace Monogame_Summative___Breakout
             if (futureY.Bottom > _window.Bottom || futureY.Top < 0)
                 bouncedY = true;
 
+         
+            if (futureY.Intersects(paddle.Bounds))
+            {
+                bouncedY = true;
+            }
+
+
             if (bouncedY)
                 _speed.Y *= -1;
 
-            _location.Offset(0, (int)_speed.Y); // Only move after checking
+            _location.Offset(0, (int)_speed.Y); // move after checking
 
 
             //Check horizontal movement
@@ -73,12 +80,18 @@ namespace Monogame_Summative___Breakout
             if (futureX.Right > _window.Right || futureX.Left < 0)
                 bouncedX = true;
 
+            if (futureX.Intersects(paddle.Bounds))
+            {
+                bouncedX = true;
+            }
+
+
             if (bouncedX)
             {
                 _speed.X *= -1;
             }
 
-            _location.Offset((int)_speed.X, 0); // Only move after checking
+            _location.Offset((int)_speed.X, 0); // move after checking
 
         }
 
@@ -93,19 +106,6 @@ namespace Monogame_Summative___Breakout
         {
             return _location.Intersects(bricks);
         }
-
-        //public void RemoveBricks(List<Rectangle> bricks)
-        //{
-        //    for (int i = 0; i < bricks.Count; i++)
-        //    {
-        //        if (Intersects(bricks[i]))
-        //        {
-        //            bricks.RemoveAt(i);
-        //            i--;
-
-        //        }
-        //    }
-        //}
 
 
 

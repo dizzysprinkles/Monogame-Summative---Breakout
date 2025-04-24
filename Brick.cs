@@ -30,17 +30,5 @@ namespace Monogame_Summative___Breakout
             }
         }
 
-        public void RemoveBricks(Rectangle ball)
-        {
-            for (int i = 0; i < _locations.Count; i++)
-            {
-                if (ball.Intersects(_locations[i]))
-                {
-                    _locations.RemoveAt(i);
-                    _textures.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
     }
 }

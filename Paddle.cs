@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Monogame_Summative___Breakout
 {
-    internal class Paddle
+    public class Paddle
     {
         private Texture2D _texture;
         private Rectangle _location;
@@ -22,6 +22,13 @@ namespace Monogame_Summative___Breakout
             _speed = Vector2.Zero;
             _texture = texture;
             _window = window;
+        }
+
+
+        public Rectangle Bounds
+        {
+            get { return _location; }
+            set { _location = value; }
         }
 
         public void Update(KeyboardState keyboardState, KeyboardState prevKeyboardState)
