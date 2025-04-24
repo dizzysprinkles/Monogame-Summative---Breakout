@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
@@ -31,6 +33,8 @@ namespace Monogame_Summative___Breakout
 
         List<Rectangle> brickRects;
         List<Texture2D> brickTextures;
+        List<Color> brickColours;
+        Random generator;
         
 
         public Game1()
@@ -46,6 +50,9 @@ namespace Monogame_Summative___Breakout
 
             brickRects = new List<Rectangle>();
             brickTextures = new List<Texture2D>();
+            brickColours = new List<Color>();
+
+            generator = new Random();
 
             window = new Rectangle(0,0,800,600);
 
@@ -61,6 +68,11 @@ namespace Monogame_Summative___Breakout
                     brickRects.Add(new Rectangle(x, y, 100, 33));
                 }
             }
+
+            for (int i = 0; i < brickRects.Count; i++)
+            {
+                brickColours.Add(new Color((float)generator.NextDouble(), (float)generator.NextDouble(), (float)generator.NextDouble()));
+            }
            
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.PreferredBackBufferWidth = window.Width;
@@ -69,7 +81,7 @@ namespace Monogame_Summative___Breakout
             base.Initialize();
 
             ball = new Ball(ballRect, ballSpeed, ballTexture, window);
-            bricks = new Brick(brickRects, brickTextures);
+            bricks = new Brick(brickRects, brickTextures, brickColours);
             paddle = new Paddle(paddleRect, paddleTexture, window);
         }
 
