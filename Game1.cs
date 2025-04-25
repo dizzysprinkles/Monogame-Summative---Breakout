@@ -152,9 +152,6 @@ namespace Monogame_Summative___Breakout
                 //}
                 bricks.RemoveBricks(hitBricks);
 
-
-
-
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     screenState = Screen.End;
