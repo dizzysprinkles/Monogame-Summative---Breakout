@@ -23,22 +23,16 @@ namespace Monogame_Summative___Breakout
             _colours = colours;
         }
 
-        public List<Rectangle> Bounds
+        public List<Rectangle> GetBricks
         {
             get { return _locations; }
-            set { _locations = value; }
         }
 
-        public List<Texture2D> Textures
+        public List<Texture2D> GetTextures
         {
-            get{ return _textures; }
-            set { _textures = value; }
+            get { return _textures; }
         }
 
-        public List<Color> Colours
-        {
-            get; set;
-        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -48,19 +42,18 @@ namespace Monogame_Summative___Breakout
             }
         }
 
-        //public void RemoveBricks(Ball ball)
-        //{
-        //    for (int i = 0; i < _locations.Count; i++)
-        //    {
-        //        if (ball.Intersects(_locations[i]))
-        //        {
-        //            _locations.RemoveAt(i);
-        //            _textures.RemoveAt(i);
-        //            _colours.RemoveAt(i);
-        //            i--;
-        //        }
-        //    }
-        //}
+        public void RemoveBricks(List<Rectangle> hitBricks)
+        {
+            for (int i = 0; i < _locations.Count; i++)
+            {
+                if (hitBricks.Contains(_locations[i]))
+                {
+                    _locations.RemoveAt(i);
+                    _textures.RemoveAt(i);
+                    _colours.RemoveAt(i);
+                }
+            }
+        }
 
     }
 }

@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/EightBitDragon.ttf
+/copy:Fonts/EightBitDragon.ttf
+
 #begin Fonts/InfiniteEnergy.ttf
 /copy:Fonts/InfiniteEnergy.ttf
 
@@ -32,6 +35,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TitleFont.spritefont
+
+#begin Fonts/TutorialFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/TutorialFont.spritefont
 
 #begin Images/ball.png
 /importer:TextureImporter

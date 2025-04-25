@@ -11,7 +11,8 @@ namespace Monogame_Summative___Breakout
     public class Ball
     {
         private Rectangle _location, _window;
-        
+        private List<Rectangle> _hitBricks;
+        private List<int> _damagedBricks;
         private Vector2 _speed;
         private Texture2D _texture;
 
@@ -21,6 +22,8 @@ namespace Monogame_Summative___Breakout
             _speed = speed;
             _texture = texture;
             _window = window;
+            _hitBricks = new List<Rectangle>();
+            _damagedBricks = new List<int>();
         }
 
         public Rectangle Bounds
@@ -29,8 +32,23 @@ namespace Monogame_Summative___Breakout
             set { _location = value; }
         }
 
-        public void Update(List<Rectangle> bricks, Paddle paddle) 
+        public List<Rectangle> HitBricks
         {
+            get { return _hitBricks; }
+        }
+
+        public List<int> DamagedBricks
+        {
+            get { return _damagedBricks; }
+        }
+
+
+
+        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures) 
+        {
+            _hitBricks.Clear();
+            _damagedBricks.Clear();
+
             bool bouncedX = false;
             bool bouncedY = false;
 
@@ -40,16 +58,27 @@ namespace Monogame_Summative___Breakout
 
             foreach (Rectangle brick in bricks)
             {
-                if (futureY.Intersects(brick))
+                for (int i = 0; i < brickTextures.Count; i++)
                 {
-                    bouncedY = true;
-                    break;
+                    if (futureY.Intersects(brick))
+                    {
+                        _damagedBricks.Add(i);
+                        _hitBricks.Add(brick);
+                        bouncedY = true;
+                    }
                 }
+
             }
 
-            if (futureY.Bottom > _window.Bottom || futureY.Top < 0)
+
+
+            if ( futureY.Top < 0)
                 bouncedY = true;
 
+            if (futureY.Bottom > _window.Bottom)
+            {
+                _speed = Vector2.Zero;
+            }
          
             if (futureY.Intersects(paddle.Bounds))
             {
@@ -69,10 +98,14 @@ namespace Monogame_Summative___Breakout
 
             foreach (Rectangle brick in bricks)
             {
-                if (futureX.Intersects(brick))
+                for (int i = 0; i < brickTextures.Count; i++)
                 {
-                    bouncedX = true;
-                    break;
+                    if (futureX.Intersects(brick) && !_hitBricks.Contains(brick))
+                    {
+                        _damagedBricks.Add(i);
+                        _hitBricks.Add(brick);
+                        bouncedX = true;
+                    }
                 }
             }
 
@@ -103,6 +136,7 @@ namespace Monogame_Summative___Breakout
         {
             return _location.Intersects(bricks);
         }
+
 
     }
 }

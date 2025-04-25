@@ -24,14 +24,14 @@ namespace Monogame_Summative___Breakout
 
         Rectangle window, ballRect, paddleRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, paddleTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, paddleTexture, damagedTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
         Brick bricks;
         Paddle paddle;
         Vector2 ballSpeed;
 
-        SpriteFont instructionFont, titleFont; 
+        SpriteFont instructionFont, titleFont, tutorialFont; 
 
         List<Rectangle> brickRects;
         List<Texture2D> brickTextures;
@@ -58,7 +58,7 @@ namespace Monogame_Summative___Breakout
 
             window = new Rectangle(0,0,800,600);
 
-            ballRect = new Rectangle(400, 500, 25, 25);
+            ballRect = new Rectangle(350, 500, 25, 25);
             ballSpeed = new Vector2(2, 2);
 
             paddleRect = new Rectangle(300, 550, 100, 25);
@@ -102,9 +102,11 @@ namespace Monogame_Summative___Breakout
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
             ballTexture = Content.Load<Texture2D>("Images/ball");
             paddleTexture = Content.Load<Texture2D>("Images/paddle_1");
+            damagedTexture = Content.Load<Texture2D>("Images/damaged_1");
 
             titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
             instructionFont = Content.Load<SpriteFont>("Fonts/InstructionFont");
+            tutorialFont = Content.Load<SpriteFont>("Fonts/TutorialFont");
         }
 
         protected override void Update(GameTime gameTime)
@@ -117,14 +119,22 @@ namespace Monogame_Summative___Breakout
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
+                    paddle.Bounds = new Rectangle(300, 350, 100, 25);
                     screenState = Screen.Tutorial;
+                }
+
+                if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
+                {
+                    screenState = Screen.Main;
                 }
             }
             //Tutorial
             else if (screenState == Screen.Tutorial)
             {
+                paddle.Update(currentKeyboardState);
                 if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
                 {
+                    paddle.Bounds = new Rectangle(300, 550, 100, 25);
                     screenState = Screen.Main;
                 }
             }
@@ -132,14 +142,25 @@ namespace Monogame_Summative___Breakout
             else if (screenState == Screen.Main)
             {
                 paddle.Update(currentKeyboardState);
-                ball.Update(brickRects, paddle);
-                
-           
-               
-                //if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures);
+                List<Rectangle> hitBricks = ball.HitBricks;
+                //List<int> damagedBricks = ball.DamagedBricks;
+
+                //for (int i = 0; i < hitBricks.Count; i++)
                 //{
-                //    screenState = Screen.End;
+                //    bricks.GetTextures[damagedBricks[i]] = damagedTexture;
                 //}
+                bricks.RemoveBricks(hitBricks);
+
+
+
+
+                if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                {
+                    screenState = Screen.End;
+                }
+
+                //if(brickRects)
             }
             //End
             else
@@ -166,13 +187,19 @@ namespace Monogame_Summative___Breakout
                 _spriteBatch.Draw(titleBackgroundTexture, window, Color.White);
 
                 _spriteBatch.DrawString(titleFont, "Breakout", new Vector2(20, 10), Color.White);
-                _spriteBatch.DrawString(instructionFont, "Press [something] to go to the TUTORIAL", new Vector2(20, 500), Color.LightSeaGreen);
-                _spriteBatch.DrawString(instructionFont, "Press [something] to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
+                _spriteBatch.DrawString(instructionFont, "Press ENTER to go to the TUTORIAL", new Vector2(20, 500), Color.LightSeaGreen);
+                _spriteBatch.DrawString(instructionFont, "Press SPACE to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
             }
             //Tutorial
             else if (screenState == Screen.Tutorial)
             {
                 _spriteBatch.Draw(tutorialBackgroundTexture, window, Color.White);
+
+                _spriteBatch.DrawString(tutorialFont, "You control the paddle with the keys A & D, \nor the left and right arrow keys.", new Vector2(20, 10), Color.White);
+                _spriteBatch.DrawString(tutorialFont, "Your goal is to make sure the ball doesn't \ntouch the ground AND to destroy all the bricks", new Vector2(20, 90), Color.White);
+                paddle.Draw(_spriteBatch);
+
+                _spriteBatch.DrawString(instructionFont, "Press SPACE to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
             }
             //Main
             else if (screenState == Screen.Main)
