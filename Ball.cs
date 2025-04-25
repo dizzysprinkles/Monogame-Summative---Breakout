@@ -26,10 +26,10 @@ namespace Monogame_Summative___Breakout
             _damagedBricks = new List<int>();
         }
 
-        public Rectangle Bounds
+        public Vector2 Speed
         {
-            get { return _location; }
-            set { _location = value; }
+            get { return _speed; }
+            set { _speed = value; }
         }
 
         public List<Rectangle> HitBricks

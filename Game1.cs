@@ -160,7 +160,10 @@ namespace Monogame_Summative___Breakout
                     screenState = Screen.End;
                 }
 
-                //if(brickRects)
+                if (ball.Speed == Vector2.Zero)
+                {
+                    screenState = Screen.End;
+                }
             }
             //End
             else
@@ -218,6 +221,10 @@ namespace Monogame_Summative___Breakout
             else
             {
                 _spriteBatch.Draw(endBackgroundTexture, window, Color.White);
+
+                _spriteBatch.DrawString(titleFont, "THE END", new Vector2(225, 250), Color.White);
+
+                _spriteBatch.DrawString(instructionFont, "Press ESCAPE to Quit", new Vector2(225, 550), Color.PaleTurquoise);
             }
 
             _spriteBatch.End();
