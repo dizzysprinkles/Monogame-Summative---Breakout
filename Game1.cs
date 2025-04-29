@@ -8,7 +8,6 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-    //TODO - Fix ball collisions, add Colours to bricks, add damaged texture to bricks, test disappearing
     enum Screen
     {
         Title,
@@ -22,14 +21,16 @@ namespace Monogame_Summative___Breakout
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Rectangle window, ballRect, paddleRect;
+        Rectangle window, ballRect, paddleRect, testPowerUpRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, damagedTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, damagedTexture, testTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
         Brick bricks;
         Paddle paddle;
         Vector2 ballSpeed;
+
+        bool powerUp;
 
         SpriteFont instructionFont, titleFont, tutorialFont; 
 
@@ -48,6 +49,7 @@ namespace Monogame_Summative___Breakout
 
         protected override void Initialize()
         {
+            powerUp = false;
             screenState = Screen.Title;  // NEED TO CHANGE
 
             brickRects = new List<Rectangle>();
@@ -63,6 +65,7 @@ namespace Monogame_Summative___Breakout
             ballSpeed = new Vector2(2, 2);
 
             paddleRect = new Rectangle(300, 550, 100, 25);
+            testPowerUpRect = new Rectangle(350, 420, 80, 20);
 
             for (int x = 0; x < window.Width; x += 100)
             {
@@ -108,6 +111,8 @@ namespace Monogame_Summative___Breakout
             mainBackgroundTexture = Content.Load<Texture2D>("Images/mainBackground");
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
             ballTexture = Content.Load<Texture2D>("Images/ball");
+
+            testTexture = Content.Load<Texture2D>("Images/powerUpFast");
            
             damagedTexture = Content.Load<Texture2D>("Images/damaged_1");
 
@@ -149,7 +154,7 @@ namespace Monogame_Summative___Breakout
             else if (screenState == Screen.Main)
             {
                 paddle.Update(currentKeyboardState, gameTime);
-                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures);
+                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, testPowerUpRect, powerUp);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 //List<int> damagedBricks = ball.DamagedBricks;
 
@@ -158,16 +163,28 @@ namespace Monogame_Summative___Breakout
                 //    bricks.GetTextures[damagedBricks[i]] = damagedTexture;
                 //}
                 bricks.RemoveBricks(hitBricks);
+                if (bricks.GetBricks.Count <= 64)
+                {
+                    powerUp = true;
+                }
+                if (powerUp == true && ball.Intersects(testPowerUpRect))
+                {
+                    ball.Speed *= 2;
+                    //after set time, divide by 2 to take the powerup back
+                }
+
 
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     screenState = Screen.End;
                 }
 
-                if (ball.Speed == Vector2.Zero)
-                {
-                    screenState = Screen.End;
-                }
+
+
+                //if (ball.Speed == Vector2.Zero)
+                //{
+                //    screenState = Screen.End;
+                //}
             }
             //End
             else
@@ -216,6 +233,11 @@ namespace Monogame_Summative___Breakout
                 for (int i = 0; i < brickRects.Count; i++)
                 {
                     bricks.Draw(_spriteBatch);
+                }
+
+               if (powerUp == true)
+                {
+                    _spriteBatch.Draw(testTexture, testPowerUpRect, Color.White);
                 }
 
                 ball.Draw(_spriteBatch);

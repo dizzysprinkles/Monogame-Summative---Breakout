@@ -44,13 +44,14 @@ namespace Monogame_Summative___Breakout
 
 
 
-        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures) 
+        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle powerUpRect, bool powerUp) 
         {
             _hitBricks.Clear();
             _damagedBricks.Clear();
 
             bool bouncedX = false;
             bool bouncedY = false;
+            
 
             //Check vertical movement
             Rectangle futureY = _location;
@@ -68,6 +69,11 @@ namespace Monogame_Summative___Breakout
                     }
                 }
 
+            }
+
+            if (futureY.Intersects(powerUpRect) && powerUp == true)
+            {
+                bouncedY = true;
             }
 
 
@@ -107,6 +113,11 @@ namespace Monogame_Summative___Breakout
                         bouncedX = true;
                     }
                 }
+            }
+
+            if (futureX.Intersects(powerUpRect) && powerUp == true)
+            {
+                bouncedX = true;
             }
 
             if (futureX.Right > _window.Right || futureX.Left < 0)
