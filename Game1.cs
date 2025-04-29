@@ -24,7 +24,7 @@ namespace Monogame_Summative___Breakout
 
         Rectangle window, ballRect, paddleRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, paddleTexture, damagedTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, damagedTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
         Brick bricks;
@@ -34,7 +34,7 @@ namespace Monogame_Summative___Breakout
         SpriteFont instructionFont, titleFont, tutorialFont; 
 
         List<Rectangle> brickRects;
-        List<Texture2D> brickTextures;
+        List<Texture2D> brickTextures, paddleTextures;
         List<Color> brickColours;
         Random generator;
         
@@ -53,6 +53,7 @@ namespace Monogame_Summative___Breakout
             brickRects = new List<Rectangle>();
             brickTextures = new List<Texture2D>();
             brickColours = new List<Color>();
+            paddleTextures = new List<Texture2D>();
 
             generator = new Random();
 
@@ -84,7 +85,7 @@ namespace Monogame_Summative___Breakout
 
             ball = new Ball(ballRect, ballSpeed, ballTexture, window);
             bricks = new Brick(brickRects, brickTextures, brickColours);
-            paddle = new Paddle(paddleRect, paddleTexture, window);
+            paddle = new Paddle(paddleRect, paddleTextures, window);
         }
 
         protected override void LoadContent()
@@ -93,15 +94,21 @@ namespace Monogame_Summative___Breakout
 
             for (int i = 0; i < brickRects.Count; i++)
             {
-                brickTextures.Add(Content.Load<Texture2D>("Images/brick_1"));
+                brickTextures.Add(Content.Load<Texture2D>("Images/brick"));
             }
+
+            for (int i = 1; i <=3; i++)
+            {
+                paddleTextures.Add(Content.Load<Texture2D>("Images/paddle_" + i));
+            }
+
 
             titleBackgroundTexture = Content.Load<Texture2D>("Images/titleBackground");
             tutorialBackgroundTexture = Content.Load<Texture2D>("Images/tutorialBackground");
             mainBackgroundTexture = Content.Load<Texture2D>("Images/mainBackground");
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
             ballTexture = Content.Load<Texture2D>("Images/ball");
-            paddleTexture = Content.Load<Texture2D>("Images/paddle_1");
+           
             damagedTexture = Content.Load<Texture2D>("Images/damaged_1");
 
             titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
@@ -131,7 +138,7 @@ namespace Monogame_Summative___Breakout
             //Tutorial
             else if (screenState == Screen.Tutorial)
             {
-                paddle.Update(currentKeyboardState);
+                paddle.Update(currentKeyboardState, gameTime);
                 if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
                 {
                     paddle.Bounds = new Rectangle(300, 550, 100, 25);
@@ -141,7 +148,7 @@ namespace Monogame_Summative___Breakout
             //Main
             else if (screenState == Screen.Main)
             {
-                paddle.Update(currentKeyboardState);
+                paddle.Update(currentKeyboardState, gameTime);
                 ball.Update(bricks.GetBricks, paddle, bricks.GetTextures);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 //List<int> damagedBricks = ball.DamagedBricks;

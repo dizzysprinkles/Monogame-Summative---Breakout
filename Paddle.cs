@@ -11,17 +11,24 @@ namespace Monogame_Summative___Breakout
 {
     public class Paddle
     {
-        private Texture2D _texture;
+        private List<Texture2D> _textures;
         private Rectangle _location;
         private Rectangle _window;
         private Vector2 _speed;
+        private int _textureIndex;
+        private float _seconds;
+        private float _animationSpeed;
 
-        public Paddle(Rectangle location, Texture2D texture, Rectangle window)
+
+        public Paddle(Rectangle location, List<Texture2D> textures, Rectangle window)
         {
             _location = location;
             _speed = Vector2.Zero;
-            _texture = texture;
+            _textureIndex = 0;
+            _textures = textures;
             _window = window;
+            _seconds = 0f;
+            _animationSpeed = 0.2f;
         }
 
 
@@ -31,7 +38,7 @@ namespace Monogame_Summative___Breakout
             set { _location = value; }
         }
 
-        public void Update(KeyboardState keyboardState)
+        public void Update(KeyboardState keyboardState, GameTime gameTime)
         {
             _speed = Vector2.Zero;
             if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
@@ -52,14 +59,33 @@ namespace Monogame_Summative___Breakout
                 _speed.X -= 3;
             }
 
+     
+
+            //Animation
+            _seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (_seconds > _animationSpeed)
+            {
+                _seconds = 0;
+                _textureIndex++;
+                if (_textureIndex >= _textures.Count)
+                {
+                    _textureIndex = 1;
+                }
+            }
+
             _location.Offset(_speed);
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _location, Color.White);
+            spriteBatch.Draw(_textures[_textureIndex], _location, Color.White);
         }
+
+        //public bool Contains(Rectangle ball)
+        //{
+        //    return _location.Contains(ball);
+        //}
 
 
     }

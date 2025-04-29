@@ -123,6 +123,8 @@ namespace Monogame_Summative___Breakout
                 _speed.X *= -1;
             }
 
+           
+
             _location.Offset((int)_speed.X, 0); // move after checking
 
         }
@@ -136,6 +138,11 @@ namespace Monogame_Summative___Breakout
         {
             return _location.Intersects(bricks);
         }
+
+        //public bool Contains(Rectangle paddle)
+        //{
+        //    return _location.Contains(paddle);
+        //}
 
 
     }

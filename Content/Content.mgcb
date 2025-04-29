@@ -55,7 +55,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/ball.png
 
-#begin Images/brick_1.png
+#begin Images/brick.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -65,7 +65,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/brick_1.png
+/build:Images/brick.png
 
 #begin Images/damaged_1.png
 /importer:TextureImporter
