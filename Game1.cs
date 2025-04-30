@@ -8,6 +8,8 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
+    //TODO: figure out scoring, add sound effects and music, add other powerups - maybe randomize locations? TBD
+
     enum Screen
     {
         Title,
@@ -29,6 +31,8 @@ namespace Monogame_Summative___Breakout
         Brick bricks;
         Paddle paddle;
         Vector2 ballSpeed;
+
+        int score;
 
         bool fastBool, slowBool;
 
@@ -58,6 +62,8 @@ namespace Monogame_Summative___Breakout
             paddleTextures = new List<Texture2D>();
 
             generator = new Random();
+
+            score = 0;
 
             window = new Rectangle(0,0,800,600);
 
@@ -176,6 +182,7 @@ namespace Monogame_Summative___Breakout
                 //{
                 //    bricks.GetTextures[damagedBricks[i]] = damagedTexture;
                 //}
+                
                 bricks.RemoveBricks(hitBricks);
                 if (bricks.GetBricks.Count == 64)
                 {
@@ -240,6 +247,8 @@ namespace Monogame_Summative___Breakout
             else if (screenState == Screen.Main)
             {
                 _spriteBatch.Draw(mainBackgroundTexture, window, Color.White);
+
+                _spriteBatch.DrawString(instructionFont, $"Score: {score}", new Vector2(600, 500), Color.White);
 
                 for (int i = 0; i < brickRects.Count; i++)
                 {

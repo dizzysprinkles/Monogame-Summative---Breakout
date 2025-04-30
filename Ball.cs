@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace Monogame_Summative___Breakout
 {
@@ -162,10 +163,7 @@ namespace Monogame_Summative___Breakout
                 _speed.X *= -1;
             }
 
-           
-
             _location.Offset((int)_speed.X, 0); // move after checking
-
         }
 
         public void Draw(SpriteBatch spriteBatch)
