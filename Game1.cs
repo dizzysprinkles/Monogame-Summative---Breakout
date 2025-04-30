@@ -21,16 +21,16 @@ namespace Monogame_Summative___Breakout
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Rectangle window, ballRect, paddleRect, testPowerUpRect;
+        Rectangle window, ballRect, paddleRect, fastBallRect, slowBallRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, damagedTexture, testTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, damagedTexture, fastBallTexture, slowBallTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
         Brick bricks;
         Paddle paddle;
         Vector2 ballSpeed;
 
-        bool powerUp;
+        bool fastBool, slowBool;
 
         SpriteFont instructionFont, titleFont, tutorialFont; 
 
@@ -48,7 +48,8 @@ namespace Monogame_Summative___Breakout
 
         protected override void Initialize()
         {
-            powerUp = false;
+            fastBool = false;
+            slowBool = false;
             screenState = Screen.Title;  // NEED TO CHANGE
 
             brickRects = new List<Rectangle>();
@@ -64,7 +65,8 @@ namespace Monogame_Summative___Breakout
             ballSpeed = new Vector2(2, 2);
 
             paddleRect = new Rectangle(300, 550, 100, 25);
-            testPowerUpRect = new Rectangle(350, 420, 80, 20);
+            fastBallRect = new Rectangle(350, 420, 80, 20);
+            slowBallRect = new Rectangle(200, 500, 80, 20);
 
             for (int x = 0; x < window.Width; x += 100)
             {
@@ -110,7 +112,8 @@ namespace Monogame_Summative___Breakout
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
             ballTexture = Content.Load<Texture2D>("Images/ball");
 
-            testTexture = Content.Load<Texture2D>("Images/powerUpFast");
+            fastBallTexture = Content.Load<Texture2D>("Images/powerUpFast");
+            slowBallTexture = Content.Load<Texture2D>("Images/powerUpSlow");
            
             damagedTexture = Content.Load<Texture2D>("Images/damaged_1");
 
@@ -153,13 +156,19 @@ namespace Monogame_Summative___Breakout
             {
                 paddle.Update(currentKeyboardState, gameTime);
 
-                if (powerUp == true && ball.Intersects(testPowerUpRect))
+                if (ball.Fast == true)
                 {
-                    ball.Speed *=10;
-                    powerUp = false;
+                    ball.Speed *=1.5f;
+                    fastBool = false;
                 }
 
-                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, testPowerUpRect, powerUp);
+                if (ball.Slow)
+                {
+                    ball.Speed /= 1.5f;
+                    slowBool = false;
+                }
+
+                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastBallRect, fastBool, slowBool, slowBallRect);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 //List<int> damagedBricks = ball.DamagedBricks;
 
@@ -170,7 +179,12 @@ namespace Monogame_Summative___Breakout
                 bricks.RemoveBricks(hitBricks);
                 if (bricks.GetBricks.Count == 64)
                 {
-                    powerUp = true;
+                    fastBool = true;
+                }
+
+                if (bricks.GetBricks.Count == 40)
+                {
+                    slowBool = true;
                 }
                
 
@@ -179,10 +193,10 @@ namespace Monogame_Summative___Breakout
                     screenState = Screen.End;
                 }
 
-                //if (ball.Speed == Vector2.Zero)
-                //{
-                //    screenState = Screen.End;
-                //}
+                if (ball.Speed == Vector2.Zero)
+                {
+                    screenState = Screen.End;
+                }
             }
             //End
             else
@@ -232,9 +246,14 @@ namespace Monogame_Summative___Breakout
                     bricks.Draw(_spriteBatch);
                 }
 
-                if (powerUp == true)
+                if (fastBool == true)
                 {
-                    _spriteBatch.Draw(testTexture, testPowerUpRect, Color.White);
+                    _spriteBatch.Draw(fastBallTexture, fastBallRect, Color.White);
+                }
+
+                if (slowBool == true)
+                {
+                    _spriteBatch.Draw(slowBallTexture, slowBallRect, Color.White);
                 }
 
                 ball.Draw(_spriteBatch);

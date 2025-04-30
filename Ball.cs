@@ -15,6 +15,7 @@ namespace Monogame_Summative___Breakout
         private List<int> _damagedBricks;
         private Vector2 _speed;
         private Texture2D _texture;
+        private bool _fast, _slow;
 
         public Ball(Rectangle location, Vector2 speed, Texture2D texture, Rectangle window)
         {
@@ -24,6 +25,18 @@ namespace Monogame_Summative___Breakout
             _window = window;
             _hitBricks = new List<Rectangle>();
             _damagedBricks = new List<int>();
+            _fast = false;
+            _slow = false;
+        }
+
+        public bool Fast
+        {
+            get { return _fast; }
+        }
+
+        public bool Slow
+        {
+            get { return _slow; }
         }
 
         public Vector2 Speed
@@ -37,18 +50,20 @@ namespace Monogame_Summative___Breakout
             get { return _hitBricks; }
         }
 
-        public List<int> DamagedBricks
-        {
-            get { return _damagedBricks; }
-        }
+        //public List<int> DamagedBricks
+        //{
+        //    get { return _damagedBricks; }
+        //}
 
 
 
-        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle powerUpRect, bool powerUp) 
+        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect) 
         {
             _hitBricks.Clear();
             _damagedBricks.Clear();
 
+            _fast = false;
+            _slow = false;
             bool bouncedX = false;
             bool bouncedY = false;
             
@@ -71,11 +86,17 @@ namespace Monogame_Summative___Breakout
 
             }
 
-            if (futureY.Intersects(powerUpRect) && powerUp == true)
+            if (futureY.Intersects(fastRect) && fast == true)
             {
+                _fast = true;
                 bouncedY = true;
             }
 
+            if (futureY.Intersects(slowRect) && slow == true)
+            {
+                _slow = true;
+                bouncedY = true;
+            }
 
 
             if ( futureY.Top < 0)
@@ -115,9 +136,15 @@ namespace Monogame_Summative___Breakout
                 }
             }
 
-            if (futureX.Intersects(powerUpRect) && powerUp == true
-                )
+            if (futureX.Intersects(fastRect) && fast == true)
             {
+                _fast = true;
+                bouncedX = true;
+            }
+
+            if (futureX.Intersects(slowRect) && slow == true)
+            {
+                _slow = true;
                 bouncedX = true;
             }
 

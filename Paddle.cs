@@ -43,23 +43,21 @@ namespace Monogame_Summative___Breakout
             _speed = Vector2.Zero;
             if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left))
             {
-                _speed.X = -3;
+                _speed.X = -4;
             }
             if (_location.X < 0)
             {
-                _speed.X += 3;
+                _speed.X += 4;
             }
 
             else if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right))
             {
-                _speed.X = 3;
+                _speed.X = 4;
             }
             if (_location.X > _window.Width - _location.Width)
             {
-                _speed.X -= 3;
+                _speed.X -= 4;
             }
-
-     
 
             //Animation
             _seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -81,12 +79,6 @@ namespace Monogame_Summative___Breakout
         {
             spriteBatch.Draw(_textures[_textureIndex], _location, Color.White);
         }
-
-        //public bool Contains(Rectangle ball)
-        //{
-        //    return _location.Contains(ball);
-        //}
-
 
     }
 }
