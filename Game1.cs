@@ -54,7 +54,7 @@ namespace Monogame_Summative___Breakout
         {
             fastBool = false;
             slowBool = false;
-            screenState = Screen.Title;  // NEED TO CHANGE
+            screenState = Screen.Title;
 
             brickRects = new List<Rectangle>();
             brickTextures = new List<Texture2D>();
