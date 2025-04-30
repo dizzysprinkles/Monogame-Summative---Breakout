@@ -39,7 +39,6 @@ namespace Monogame_Summative___Breakout
         List<Color> brickColours;
         Random generator;
         
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -105,7 +104,6 @@ namespace Monogame_Summative___Breakout
                 paddleTextures.Add(Content.Load<Texture2D>("Images/paddle_" + i));
             }
 
-
             titleBackgroundTexture = Content.Load<Texture2D>("Images/titleBackground");
             tutorialBackgroundTexture = Content.Load<Texture2D>("Images/tutorialBackground");
             mainBackgroundTexture = Content.Load<Texture2D>("Images/mainBackground");
@@ -154,6 +152,13 @@ namespace Monogame_Summative___Breakout
             else if (screenState == Screen.Main)
             {
                 paddle.Update(currentKeyboardState, gameTime);
+
+                if (powerUp == true && ball.Intersects(testPowerUpRect))
+                {
+                    ball.Speed *=10;
+                    powerUp = false;
+                }
+
                 ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, testPowerUpRect, powerUp);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 //List<int> damagedBricks = ball.DamagedBricks;
@@ -163,23 +168,16 @@ namespace Monogame_Summative___Breakout
                 //    bricks.GetTextures[damagedBricks[i]] = damagedTexture;
                 //}
                 bricks.RemoveBricks(hitBricks);
-                if (bricks.GetBricks.Count <= 64)
+                if (bricks.GetBricks.Count == 64)
                 {
                     powerUp = true;
                 }
-                if (powerUp == true && ball.Intersects(testPowerUpRect))
-                {
-                    ball.Speed *= 2;
-                    //after set time, divide by 2 to take the powerup back
-                }
-
+               
 
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
                     screenState = Screen.End;
                 }
-
-
 
                 //if (ball.Speed == Vector2.Zero)
                 //{
@@ -195,7 +193,6 @@ namespace Monogame_Summative___Breakout
                 }
             }
 
-            
             prevKeyboardState = currentKeyboardState;
             base.Update(gameTime);
         }
@@ -235,7 +232,7 @@ namespace Monogame_Summative___Breakout
                     bricks.Draw(_spriteBatch);
                 }
 
-               if (powerUp == true)
+                if (powerUp == true)
                 {
                     _spriteBatch.Draw(testTexture, testPowerUpRect, Color.White);
                 }

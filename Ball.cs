@@ -115,7 +115,8 @@ namespace Monogame_Summative___Breakout
                 }
             }
 
-            if (futureX.Intersects(powerUpRect) && powerUp == true)
+            if (futureX.Intersects(powerUpRect) && powerUp == true
+                )
             {
                 bouncedX = true;
             }
@@ -149,12 +150,6 @@ namespace Monogame_Summative___Breakout
         {
             return _location.Intersects(bricks);
         }
-
-        //public bool Contains(Rectangle paddle)
-        //{
-        //    return _location.Contains(paddle);
-        //}
-
 
     }
 }
