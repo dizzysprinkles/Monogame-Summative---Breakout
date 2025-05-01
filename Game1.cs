@@ -9,7 +9,7 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-    //TODO: add intro music,find main and end music, add other powerups - maybe randomize locations or when they occur (ie, what # of bricks left)? TBD
+    //TODO: add intro music, find main and end music, add other powerups - maybe randomize locations or when they occur (ie, what # of bricks left)? TBD
 
     enum Screen
     {
@@ -58,6 +58,7 @@ namespace Monogame_Summative___Breakout
             slowBool = false;
             screenState = Screen.Title;
 
+            //Lists
             brickRects = new List<Rectangle>();
             brickTextures = new List<Texture2D>();
             brickColours = new List<Color>();
@@ -65,15 +66,16 @@ namespace Monogame_Summative___Breakout
 
             generator = new Random();
 
+            //Rectangles
             window = new Rectangle(0,0,800,600);
-
             ballRect = new Rectangle(350, 500, 25, 25);
-            ballSpeed = new Vector2(2, 2);
-
             paddleRect = new Rectangle(300, 550, 100, 25);
             fastBallRect = new Rectangle(350, 420, 80, 20);
             slowBallRect = new Rectangle(200, 500, 80, 20);
 
+            ballSpeed = new Vector2(2, 2);
+
+            //Loop - generates Bricks
             for (int x = 0; x < window.Width; x += 100)
             {
                 for (int y = 0; y < 363; y += 33)
@@ -81,12 +83,12 @@ namespace Monogame_Summative___Breakout
                     brickRects.Add(new Rectangle(x, y, 100, 33));
                 }
             }
-
             for (int i = 0; i < brickRects.Count; i++)
             {
                 brickColours.Add(new Color((float)generator.NextDouble(), (float)generator.NextDouble(), (float)generator.NextDouble()));
             }
-           
+            
+            //Window
             _graphics.PreferredBackBufferHeight = window.Height;
             _graphics.PreferredBackBufferWidth = window.Width;
             _graphics.ApplyChanges();
@@ -209,12 +211,7 @@ namespace Monogame_Summative___Breakout
                 }
                
 
-                if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
-                {
-                    screenState = Screen.End;
-                }
-
-                if (ball.Speed == Vector2.Zero)
+                if (ball.Speed == Vector2.Zero || bricks.GetBricks.Count == 0)
                 {
                     screenState = Screen.End;
                 }
