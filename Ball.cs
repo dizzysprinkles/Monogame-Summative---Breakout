@@ -14,7 +14,6 @@ namespace Monogame_Summative___Breakout
     {
         private Rectangle _location, _window;
         private List<Rectangle> _hitBricks;
-        private List<int> _damagedBricks;
         private Vector2 _speed;
         private Texture2D _texture;
         private bool _fast, _slow;
@@ -26,7 +25,6 @@ namespace Monogame_Summative___Breakout
             _texture = texture;
             _window = window;
             _hitBricks = new List<Rectangle>();
-            _damagedBricks = new List<int>();
             _fast = false;
             _slow = false;
         }
@@ -52,17 +50,12 @@ namespace Monogame_Summative___Breakout
             get { return _hitBricks; }
         }
 
-        //public List<int> DamagedBricks
-        //{
-        //    get { return _damagedBricks; }
-        //}
 
 
 
         public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score) 
         {
             _hitBricks.Clear();
-            _damagedBricks.Clear();
 
             _fast = false;
             _slow = false;
@@ -76,15 +69,11 @@ namespace Monogame_Summative___Breakout
 
             foreach (Rectangle brick in bricks)
             {
-                for (int i = 0; i < brickTextures.Count; i++)
+                if (futureY.Intersects(brick))
                 {
-                    if (futureY.Intersects(brick))
-                    {
-                        _damagedBricks.Add(i);
-                        _hitBricks.Add(brick);
-                        bouncedY = true;
-                        score.Play();
-                    }
+                    _hitBricks.Add(brick);
+                    bouncedY = true;
+                    score.Play();
                 }
 
             }
@@ -136,15 +125,11 @@ namespace Monogame_Summative___Breakout
 
             foreach (Rectangle brick in bricks)
             {
-                for (int i = 0; i < brickTextures.Count; i++)
+                if (futureX.Intersects(brick) && !_hitBricks.Contains(brick))
                 {
-                    if (futureX.Intersects(brick) && !_hitBricks.Contains(brick))
-                    {
-                        _damagedBricks.Add(i);
-                        _hitBricks.Add(brick);
-                        bouncedX = true;
-                        score.Play();
-                    }
+                    _hitBricks.Add(brick);
+                    bouncedX = true;
+                    score.Play();
                 }
             }
 
@@ -185,44 +170,6 @@ namespace Monogame_Summative___Breakout
 
         }
 
-        //public void Sound(SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score, Paddle paddle, Rectangle slowRect, Rectangle fastRect, List<Rectangle> bricks, bool fast, bool slow)
-        //{
-        //    if (_location.Right > _window.Right || _location.Left < 0 || _location.Top < 0 || _location.Intersects(paddle.Bounds))
-        //    {
-        //        bounce.Play();
-        //    }
-
-        //    if (_location.Bottom > _window.Bottom)
-        //    {
-        //        death.Play();
-        //    }
-
-        //    if (slow)
-        //    {
-        //        if (_location.Intersects(slowRect))
-        //        {
-        //            powerUp.Play();
-        //        }
-        //    }
-
-        //    if (fast)
-        //    {
-        //        if (_location.Intersects(fastRect))
-        //        {
-        //            powerUp.Play();
-        //        }
-        //    }
-
-        //    foreach (Rectangle brick in bricks)
-        //    {
-        //        if (_location.Intersects(brick))
-        //        {
-        //            score.Play();
-        //        }
-        //    }
-
-
-        //}
 
         public void Draw(SpriteBatch spriteBatch)
         {

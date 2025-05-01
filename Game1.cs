@@ -9,7 +9,7 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-    //TODO: add music, add other powerups - maybe randomize locations? TBD
+    //TODO: add intro music,find main and end music, add other powerups - maybe randomize locations or when they occur (ie, what # of bricks left)? TBD
 
     enum Screen
     {
@@ -124,7 +124,6 @@ namespace Monogame_Summative___Breakout
 
             fastBallTexture = Content.Load<Texture2D>("Images/powerUpFast");
             slowBallTexture = Content.Load<Texture2D>("Images/powerUpSlow");
-            damagedTexture = Content.Load<Texture2D>("Images/damaged_1");
 
             //Fonts
             titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
@@ -197,12 +196,6 @@ namespace Monogame_Summative___Breakout
 
                 ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastBallRect, fastBool, slowBool, slowBallRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
                 List<Rectangle> hitBricks = ball.HitBricks;
-                //List<int> damagedBricks = ball.DamagedBricks;
-
-                //for (int i = 0; i < hitBricks.Count; i++)
-                //{
-                //    bricks.GetTextures[damagedBricks[i]] = damagedTexture;
-                //}
                 
                 bricks.RemoveBricks(hitBricks);
                 if (bricks.GetBricks.Count == 64)
@@ -253,6 +246,7 @@ namespace Monogame_Summative___Breakout
                 _spriteBatch.DrawString(instructionFont, "Press ENTER to go to the TUTORIAL", new Vector2(20, 500), Color.LightSeaGreen);
                 _spriteBatch.DrawString(instructionFont, "Press SPACE to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
             }
+
             //Tutorial
             else if (screenState == Screen.Tutorial)
             {
@@ -264,6 +258,7 @@ namespace Monogame_Summative___Breakout
 
                 _spriteBatch.DrawString(instructionFont, "Press SPACE to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
             }
+
             //Main
             else if (screenState == Screen.Main)
             {
@@ -289,6 +284,7 @@ namespace Monogame_Summative___Breakout
                 ball.Draw(_spriteBatch);
                 paddle.Draw(_spriteBatch);
             }
+
             //End
             else
             {
