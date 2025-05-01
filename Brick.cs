@@ -13,14 +13,12 @@ namespace Monogame_Summative___Breakout
         private List<Rectangle> _locations;
         private List<Texture2D> _textures;
         private List<Color> _colours;
-        private Random _generator;
         private int _score;
 
         public Brick(List<Rectangle> locations, List<Texture2D> textures, List<Color>colours)
         {
             _locations = locations;
             _textures = textures;
-            _generator = new Random();
             _colours = colours;
             _score = 0;
         }

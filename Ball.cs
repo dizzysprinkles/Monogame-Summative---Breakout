@@ -118,7 +118,6 @@ namespace Monogame_Summative___Breakout
 
             _location.Offset(0, (int)_speed.Y); // move after checking
 
-
             //Check horizontal movement
             Rectangle futureX = _location;
             futureX.Offset((int)_speed.X, 0);
