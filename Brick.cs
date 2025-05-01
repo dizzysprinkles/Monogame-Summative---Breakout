@@ -14,6 +14,7 @@ namespace Monogame_Summative___Breakout
         private List<Texture2D> _textures;
         private List<Color> _colours;
         private Random _generator;
+        private int _score;
 
         public Brick(List<Rectangle> locations, List<Texture2D> textures, List<Color>colours)
         {
@@ -21,6 +22,7 @@ namespace Monogame_Summative___Breakout
             _textures = textures;
             _generator = new Random();
             _colours = colours;
+            _score = 0;
         }
 
         public List<Rectangle> GetBricks
@@ -31,6 +33,12 @@ namespace Monogame_Summative___Breakout
         public List<Texture2D> GetTextures
         {
             get { return _textures; }
+        }
+
+        public int Score
+        {
+            get { return _score; }
+            set { _score = value; }
         }
 
 
@@ -48,6 +56,7 @@ namespace Monogame_Summative___Breakout
             {
                 if (hitBricks.Contains(_locations[i]))
                 {
+                    _score += 2;
                     _locations.RemoveAt(i);
                     _textures.RemoveAt(i);
                     _colours.RemoveAt(i);

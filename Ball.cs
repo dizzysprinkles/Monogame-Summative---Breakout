@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace Monogame_Summative___Breakout
 
 
 
-        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect) 
+        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score) 
         {
             _hitBricks.Clear();
             _damagedBricks.Clear();
@@ -82,6 +83,7 @@ namespace Monogame_Summative___Breakout
                         _damagedBricks.Add(i);
                         _hitBricks.Add(brick);
                         bouncedY = true;
+                        score.Play();
                     }
                 }
 
@@ -91,25 +93,33 @@ namespace Monogame_Summative___Breakout
             {
                 _fast = true;
                 bouncedY = true;
+                powerUp.Play();
             }
 
             if (futureY.Intersects(slowRect) && slow == true)
             {
                 _slow = true;
                 bouncedY = true;
+                powerUp.Play();
             }
 
 
-            if ( futureY.Top < 0)
+            if (futureY.Top < 0)
+            {
+                bounce.Play();
                 bouncedY = true;
+            }
 
             if (futureY.Bottom > _window.Bottom)
             {
+                death.Play();
                 _speed = Vector2.Zero;
+                
             }
          
             if (futureY.Intersects(paddle.Bounds))
             {
+                bounce.Play();
                 bouncedY = true;
             }
 
@@ -133,6 +143,7 @@ namespace Monogame_Summative___Breakout
                         _damagedBricks.Add(i);
                         _hitBricks.Add(brick);
                         bouncedX = true;
+                        score.Play();
                     }
                 }
             }
@@ -141,20 +152,27 @@ namespace Monogame_Summative___Breakout
             {
                 _fast = true;
                 bouncedX = true;
+                powerUp.Play();
             }
 
             if (futureX.Intersects(slowRect) && slow == true)
             {
                 _slow = true;
                 bouncedX = true;
+                powerUp.Play();
             }
 
+
             if (futureX.Right > _window.Right || futureX.Left < 0)
+            {
                 bouncedX = true;
+                bounce.Play();
+            }
 
             if (futureX.Intersects(paddle.Bounds))
             {
                 bouncedX = true;
+                bounce.Play();
             }
 
 
@@ -164,7 +182,47 @@ namespace Monogame_Summative___Breakout
             }
 
             _location.Offset((int)_speed.X, 0); // move after checking
+
         }
+
+        //public void Sound(SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score, Paddle paddle, Rectangle slowRect, Rectangle fastRect, List<Rectangle> bricks, bool fast, bool slow)
+        //{
+        //    if (_location.Right > _window.Right || _location.Left < 0 || _location.Top < 0 || _location.Intersects(paddle.Bounds))
+        //    {
+        //        bounce.Play();
+        //    }
+
+        //    if (_location.Bottom > _window.Bottom)
+        //    {
+        //        death.Play();
+        //    }
+
+        //    if (slow)
+        //    {
+        //        if (_location.Intersects(slowRect))
+        //        {
+        //            powerUp.Play();
+        //        }
+        //    }
+
+        //    if (fast)
+        //    {
+        //        if (_location.Intersects(fastRect))
+        //        {
+        //            powerUp.Play();
+        //        }
+        //    }
+
+        //    foreach (Rectangle brick in bricks)
+        //    {
+        //        if (_location.Intersects(brick))
+        //        {
+        //            score.Play();
+        //        }
+        //    }
+
+
+        //}
 
         public void Draw(SpriteBatch spriteBatch)
         {

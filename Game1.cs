@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -8,7 +9,7 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-    //TODO: figure out scoring, add sound effects and music, add other powerups - maybe randomize locations? TBD
+    //TODO: add music, add other powerups - maybe randomize locations? TBD
 
     enum Screen
     {
@@ -32,7 +33,8 @@ namespace Monogame_Summative___Breakout
         Paddle paddle;
         Vector2 ballSpeed;
 
-        int score;
+        SoundEffect bounceSound, powerUpSound, deathSound, scoreSound;
+        SoundEffectInstance bounceSoundInstance, powerUpSoundInstance, deathSoundInstance, scoreSoundInstance;
 
         bool fastBool, slowBool;
 
@@ -62,8 +64,6 @@ namespace Monogame_Summative___Breakout
             paddleTextures = new List<Texture2D>();
 
             generator = new Random();
-
-            score = 0;
 
             window = new Rectangle(0,0,800,600);
 
@@ -102,6 +102,7 @@ namespace Monogame_Summative___Breakout
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Lists & Their Textures
             for (int i = 0; i < brickRects.Count; i++)
             {
                 brickTextures.Add(Content.Load<Texture2D>("Images/brick"));
@@ -112,20 +113,40 @@ namespace Monogame_Summative___Breakout
                 paddleTextures.Add(Content.Load<Texture2D>("Images/paddle_" + i));
             }
 
+            //Background Textures
             titleBackgroundTexture = Content.Load<Texture2D>("Images/titleBackground");
             tutorialBackgroundTexture = Content.Load<Texture2D>("Images/tutorialBackground");
             mainBackgroundTexture = Content.Load<Texture2D>("Images/mainBackground");
             endBackgroundTexture = Content.Load<Texture2D>("Images/endBackground");
+
+            //Item Textures
             ballTexture = Content.Load<Texture2D>("Images/ball");
 
             fastBallTexture = Content.Load<Texture2D>("Images/powerUpFast");
             slowBallTexture = Content.Load<Texture2D>("Images/powerUpSlow");
-           
             damagedTexture = Content.Load<Texture2D>("Images/damaged_1");
 
+            //Fonts
             titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
             instructionFont = Content.Load<SpriteFont>("Fonts/InstructionFont");
             tutorialFont = Content.Load<SpriteFont>("Fonts/TutorialFont");
+
+            //Sounds & Their Instances
+            bounceSound = Content.Load<SoundEffect>("SoundFX/bouncing");
+            bounceSoundInstance = bounceSound.CreateInstance();
+            bounceSoundInstance.IsLooped = false;
+
+            deathSound = Content.Load<SoundEffect>("SoundFX/deathSound");
+            deathSoundInstance = deathSound.CreateInstance();
+            deathSoundInstance.IsLooped = false;
+
+            powerUpSound = Content.Load<SoundEffect>("SoundFX/powerUp");
+            powerUpSoundInstance = powerUpSound.CreateInstance();
+            powerUpSoundInstance.IsLooped = false;
+
+            scoreSound = Content.Load<SoundEffect>("SoundFX/score");
+            scoreSoundInstance = scoreSound.CreateInstance();
+            scoreSoundInstance.IsLooped = false;
         }
 
         protected override void Update(GameTime gameTime)
@@ -174,7 +195,7 @@ namespace Monogame_Summative___Breakout
                     slowBool = false;
                 }
 
-                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastBallRect, fastBool, slowBool, slowBallRect);
+                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastBallRect, fastBool, slowBool, slowBallRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 //List<int> damagedBricks = ball.DamagedBricks;
 
@@ -248,7 +269,7 @@ namespace Monogame_Summative___Breakout
             {
                 _spriteBatch.Draw(mainBackgroundTexture, window, Color.White);
 
-                _spriteBatch.DrawString(instructionFont, $"Score: {score}", new Vector2(600, 500), Color.White);
+                _spriteBatch.DrawString(instructionFont, $"Score: {bricks.Score}", new Vector2(600, 500), Color.White);
 
                 for (int i = 0; i < brickRects.Count; i++)
                 {

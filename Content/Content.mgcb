@@ -247,3 +247,27 @@
 /processorParam:TextureFormat=Color
 /build:Images/tutorialBackground.jpg
 
+#begin SoundFX/bouncing.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/bouncing.mp3
+
+#begin SoundFX/deathSound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/deathSound.mp3
+
+#begin SoundFX/powerUp.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/powerUp.mp3
+
+#begin SoundFX/score.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/score.mp3
+
