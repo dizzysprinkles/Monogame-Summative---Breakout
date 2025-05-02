@@ -53,7 +53,7 @@ namespace Monogame_Summative___Breakout
 
 
 
-        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score) 
+        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score /*, bool fifty, bool hundred, bool twoFifty, bool fiveHundred, Rectangle fiftyRect, Rectangle hundredRect, Rectangle twoFiftyRect, Rectangle fiveHundredRect*/) 
         {
             _hitBricks.Clear();
 
