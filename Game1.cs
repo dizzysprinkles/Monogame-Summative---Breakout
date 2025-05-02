@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -9,7 +10,7 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-    //TODO: add intro music, find main and end music, add other powerups - maybe randomize locations or when they occur (ie, what # of bricks left)? TBD
+    //TODO: add other powerups - maybe randomize locations or when they occur (ie, what # of bricks left)? TBD
 
     enum Screen
     {
@@ -24,19 +25,20 @@ namespace Monogame_Summative___Breakout
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Rectangle window, ballRect, paddleRect, fastBallRect, slowBallRect;
+        Rectangle window, ballRect, paddleRect, fastPowerUpRect, slowPowerUpRect, hundredPowerUpRect, fiftyPowerUpRect, twoFiftyPowerUpRect, fiveHundredPowerUpRect;
         Screen screenState;
-        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, damagedTexture, fastBallTexture, slowBallTexture;
+        Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, fastPowerUpTexture, slowPowerUpTexture, hundredPowerUpTexture, fiftyPowerUpTexture, twoFiftyPowerUpTexture, fiveHundredPowerUpTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
         Ball ball;
         Brick bricks;
         Paddle paddle;
         Vector2 ballSpeed;
 
+        Song introSong, mainSong, endSong;
         SoundEffect bounceSound, powerUpSound, deathSound, scoreSound;
         SoundEffectInstance bounceSoundInstance, powerUpSoundInstance, deathSoundInstance, scoreSoundInstance;
 
-        bool fastBool, slowBool;
+        bool fastPowerUp, slowPowerUp;
 
         SpriteFont instructionFont, titleFont, tutorialFont; 
 
@@ -54,8 +56,9 @@ namespace Monogame_Summative___Breakout
 
         protected override void Initialize()
         {
-            fastBool = false;
-            slowBool = false;
+            Window.Title = "Welcome to Breakout!";
+            fastPowerUp = false;
+            slowPowerUp = false;
             screenState = Screen.Title;
 
             //Lists
@@ -70,10 +73,10 @@ namespace Monogame_Summative___Breakout
             window = new Rectangle(0,0,800,600);
             ballRect = new Rectangle(350, 500, 25, 25);
             paddleRect = new Rectangle(300, 550, 100, 25);
-            fastBallRect = new Rectangle(350, 420, 80, 20);
-            slowBallRect = new Rectangle(200, 500, 80, 20);
+            fastPowerUpRect = new Rectangle(350, 420, 80, 20);
+            slowPowerUpRect = new Rectangle(200, 500, 80, 20);
 
-            ballSpeed = new Vector2(2, 2);
+            ballSpeed = new Vector2(2, 2); 
 
             //Loop - generates Bricks
             for (int x = 0; x < window.Width; x += 100)
@@ -123,9 +126,12 @@ namespace Monogame_Summative___Breakout
 
             //Item Textures
             ballTexture = Content.Load<Texture2D>("Images/ball");
-
-            fastBallTexture = Content.Load<Texture2D>("Images/powerUpFast");
-            slowBallTexture = Content.Load<Texture2D>("Images/powerUpSlow");
+            fastPowerUpTexture = Content.Load<Texture2D>("Images/powerUpFast");
+            slowPowerUpTexture = Content.Load<Texture2D>("Images/powerUpSlow");
+            hundredPowerUpTexture = Content.Load<Texture2D>("Images/powerUp100");
+            fiftyPowerUpTexture = Content.Load<Texture2D>("Images/powerUp50");
+            twoFiftyPowerUpTexture = Content.Load<Texture2D>("Images/powerUp250");
+            fiveHundredPowerUpTexture = Content.Load<Texture2D>("Images/powerUp500");
 
             //Fonts
             titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
@@ -148,6 +154,15 @@ namespace Monogame_Summative___Breakout
             scoreSound = Content.Load<SoundEffect>("SoundFX/score");
             scoreSoundInstance = scoreSound.CreateInstance();
             scoreSoundInstance.IsLooped = false;
+
+            //Songs
+            introSong = Content.Load<Song>("SoundFX/introMusic");
+            mainSong = Content.Load<Song>("SoundFX/mainMusic");
+            endSong = Content.Load<Song>("SoundFX/endMusic");
+
+            MediaPlayer.Volume = 0.8f;
+            MediaPlayer.Play(introSong);
+            MediaPlayer.IsRepeating = true;
         }
 
         protected override void Update(GameTime gameTime)
@@ -160,21 +175,32 @@ namespace Monogame_Summative___Breakout
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                 {
+                    Window.Title = "Breakout - Tutorial";
+                    MediaPlayer.Volume = 0.7f;
                     paddle.Bounds = new Rectangle(300, 350, 100, 25);
                     screenState = Screen.Tutorial;
                 }
 
                 if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
                 {
+                    Window.Title = "Breakout - Main Game";
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(mainSong);
+                    MediaPlayer.Volume = 0.3f;
                     screenState = Screen.Main;
                 }
             }
             //Tutorial
             else if (screenState == Screen.Tutorial)
             {
+                
                 paddle.Update(currentKeyboardState, gameTime);
                 if (currentKeyboardState.IsKeyDown(Keys.Space) && prevKeyboardState.IsKeyUp(Keys.Space))
                 {
+                    Window.Title = "Breakout - Main Game";
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(mainSong);
+                    MediaPlayer.Volume = 0.3f;
                     paddle.Bounds = new Rectangle(300, 550, 100, 25);
                     screenState = Screen.Main;
                 }
@@ -187,32 +213,36 @@ namespace Monogame_Summative___Breakout
                 if (ball.Fast == true)
                 {
                     ball.Speed *=1.5f;
-                    fastBool = false;
+                    fastPowerUp = false;
                 }
 
                 if (ball.Slow)
                 {
                     ball.Speed /= 1.5f;
-                    slowBool = false;
+                    slowPowerUp = false;
                 }
 
-                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastBallRect, fastBool, slowBool, slowBallRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
+                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastPowerUpRect, fastPowerUp, slowPowerUp, slowPowerUpRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 
                 bricks.RemoveBricks(hitBricks);
                 if (bricks.GetBricks.Count == 64)
                 {
-                    fastBool = true;
+                    fastPowerUp = true;
                 }
 
                 if (bricks.GetBricks.Count == 40)
                 {
-                    slowBool = true;
+                    slowPowerUp = true;
                 }
-               
+
 
                 if (ball.Speed == Vector2.Zero || bricks.GetBricks.Count == 0)
                 {
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(endSong);
+                    MediaPlayer.Volume = 0.8f;
+                    Window.Title = "Breakout - Game Over";
                     screenState = Screen.End;
                 }
             }
@@ -268,14 +298,14 @@ namespace Monogame_Summative___Breakout
                     bricks.Draw(_spriteBatch);
                 }
 
-                if (fastBool == true)
+                if (fastPowerUp == true)
                 {
-                    _spriteBatch.Draw(fastBallTexture, fastBallRect, Color.White);
+                    _spriteBatch.Draw(fastPowerUpTexture, fastPowerUpRect, Color.White);
                 }
 
-                if (slowBool == true)
+                if (slowPowerUp == true)
                 {
-                    _spriteBatch.Draw(slowBallTexture, slowBallRect, Color.White);
+                    _spriteBatch.Draw(slowPowerUpTexture, slowPowerUpRect, Color.White);
                 }
 
                 ball.Draw(_spriteBatch);

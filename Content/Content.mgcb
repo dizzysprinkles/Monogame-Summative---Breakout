@@ -235,11 +235,23 @@
 /processorParam:Quality=Best
 /build:SoundFX/deathSound.mp3
 
+#begin SoundFX/endMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/endMusic.mp3
+
 #begin SoundFX/introMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:SoundFX/introMusic.mp3
+
+#begin SoundFX/mainMusic.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:SoundFX/mainMusic.mp3
 
 #begin SoundFX/powerUp.mp3
 /importer:Mp3Importer
