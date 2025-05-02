@@ -127,7 +127,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/paddle_3.png
 
-#begin Images/powerUp100.png
+#begin Images/powerUp_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -137,9 +137,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/powerUp100.png
+/build:Images/powerUp_1.png
 
-#begin Images/powerUp250.png
+#begin Images/powerUp_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -149,9 +149,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/powerUp250.png
+/build:Images/powerUp_2.png
 
-#begin Images/powerUp50.png
+#begin Images/powerUp_3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -161,9 +161,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/powerUp50.png
+/build:Images/powerUp_3.png
 
-#begin Images/powerUp500.png
+#begin Images/powerUp_4.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -173,9 +173,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/powerUp500.png
+/build:Images/powerUp_4.png
 
-#begin Images/powerUpFast.png
+#begin Images/powerUp_5.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -185,9 +185,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/powerUpFast.png
+/build:Images/powerUp_5.png
 
-#begin Images/powerUpSlow.png
+#begin Images/powerUp_6.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -197,7 +197,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/powerUpSlow.png
+/build:Images/powerUp_6.png
 
 #begin Images/titleBackground.jpg
 /importer:TextureImporter

@@ -24,7 +24,7 @@ namespace Monogame_Summative___Breakout
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        Rectangle window, ballRect, paddleRect, fastPowerUpRect, slowPowerUpRect, hundredPowerUpRect, fiftyPowerUpRect, twoFiftyPowerUpRect, fiveHundredPowerUpRect;
+        Rectangle window, ballRect, paddleRect;
         Screen screenState;
         Texture2D titleBackgroundTexture, tutorialBackgroundTexture, mainBackgroundTexture, endBackgroundTexture, ballTexture, fastPowerUpTexture, slowPowerUpTexture, hundredPowerUpTexture, fiftyPowerUpTexture, twoFiftyPowerUpTexture, fiveHundredPowerUpTexture;
         KeyboardState currentKeyboardState, prevKeyboardState;
@@ -41,10 +41,11 @@ namespace Monogame_Summative___Breakout
 
         SpriteFont instructionFont, titleFont, tutorialFont; 
 
-        List<Rectangle> brickRects;
-        List<Texture2D> brickTextures, paddleTextures;
+        List<Rectangle> brickRects, powerUpRects;
+        List<Texture2D> brickTextures, paddleTextures, powerUpTextures;
         List<Color> brickColours;
         List<int> powerUpRequirements;
+        //List<bool> powerUpBools;
         Random generator;
         
         public Game1()
@@ -73,6 +74,9 @@ namespace Monogame_Summative___Breakout
             brickColours = new List<Color>();
             paddleTextures = new List<Texture2D>();
             powerUpRequirements = new List<int>();
+            powerUpRects = new List<Rectangle>();
+            powerUpTextures = new List<Texture2D>();
+            //powerUpBools = new List<bool>();
 
             generator = new Random();
 
@@ -81,14 +85,11 @@ namespace Monogame_Summative___Breakout
             ballRect = new Rectangle(350, 500, 25, 25);
             paddleRect = new Rectangle(300, 550, 100, 25);
 
-            //Rectangles - Power Ups
-            fastPowerUpRect = new Rectangle(40, 400, 80, 20);
-            slowPowerUpRect = new Rectangle(160, 400, 80, 20);
-            hundredPowerUpRect = new Rectangle(280,400,80,20);
-            fiftyPowerUpRect = new Rectangle(400,400,80,20);
-            twoFiftyPowerUpRect = new Rectangle(520,400,80,20);
-            fiveHundredPowerUpRect = new Rectangle(640, 400, 80, 20);
-
+            //List power ups
+            for (int x = 40; x <= 640; x += 120)
+            {
+                powerUpRects.Add(new Rectangle(x, 400, 80, 20));
+            }
 
             ballSpeed = new Vector2(2, 2); 
 
@@ -135,6 +136,11 @@ namespace Monogame_Summative___Breakout
             for (int i = 1; i <=3; i++)
             {
                 paddleTextures.Add(Content.Load<Texture2D>("Images/paddle_" + i));
+            }
+
+            for (int i = 1; i <= 6; i++)
+            {
+                powerUpTextures.Add(Content.Load<Texture2D>("Images/powerUp_"+i));
             }
 
             //Background Textures
@@ -206,12 +212,12 @@ namespace Monogame_Summative___Breakout
                     MediaPlayer.Stop();
                     MediaPlayer.Play(mainSong);
                     MediaPlayer.Volume = 0.3f;
-                    fastPowerUpRect = new Rectangle(generator.Next(0, window.Width-80), generator.Next(0, window.Width-80), 80, 20);
-                    slowPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    hundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    fiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    twoFiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    fiveHundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //fastPowerUpRect = new Rectangle(generator.Next(0, window.Width-80), generator.Next(0, window.Width-80), 80, 20);
+                    //slowPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //hundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //fiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //twoFiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //fiveHundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
                     screenState = Screen.Main;
                 }
             }
@@ -226,13 +232,13 @@ namespace Monogame_Summative___Breakout
                     MediaPlayer.Stop();
                     MediaPlayer.Play(mainSong);
                     MediaPlayer.Volume = 0.3f;
-                    paddle.Bounds = new Rectangle(300, 550, 100, 25);
-                    fastPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    slowPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    hundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    fiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    twoFiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
-                    fiveHundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //paddle.Bounds = new Rectangle(300, 550, 100, 25);
+                    //fastPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //slowPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //hundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //fiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //twoFiftyPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
+                    //fiveHundredPowerUpRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Width - 80), 80, 20);
                     screenState = Screen.Main;
                 }
             }
@@ -253,39 +259,11 @@ namespace Monogame_Summative___Breakout
                     slowPowerUp = false;
                 }
 
-                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastPowerUpRect, fastPowerUp, slowPowerUp, slowPowerUpRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
+                //ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastPowerUpRect, fastPowerUp, slowPowerUp, slowPowerUpRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 
                 bricks.RemoveBricks(hitBricks);
-                if (bricks.GetBricks.Count == powerUpRequirements[0] && !bricks.GetBricks.Contains(fastPowerUpRect))
-                {
-                    fastPowerUp = true;
-                }
-
-                if (bricks.GetBricks.Count == powerUpRequirements[1] && !!bricks.GetBricks.Contains(slowPowerUpRect))
-                {
-                    slowPowerUp = true;
-                }
-
-                if (bricks.GetBricks.Count == powerUpRequirements[2] && !bricks.GetBricks.Contains(fiftyPowerUpRect))
-                {
-                    fiftyPowerUp = true;
-                }
-
-                if (bricks.GetBricks.Count == powerUpRequirements[3] && !bricks.GetBricks.Contains(hundredPowerUpRect))
-                {
-                    hundredPowerUp = true;
-                }
-
-                if (bricks.GetBricks.Count == powerUpRequirements[4] && !bricks.GetBricks.Contains(twoFiftyPowerUpRect))
-                {
-                    twoFiftyPowerUp = true;
-                }
-
-                if (bricks.GetBricks.Count == powerUpRequirements[5] && !bricks.GetBricks.Contains(fiveHundredPowerUpRect))
-                {
-                    fiveHundredPowerUp = true;
-                }
+               
 
 
                 if (ball.Speed == Vector2.Zero || bricks.GetBricks.Count == 0)
@@ -335,12 +313,6 @@ namespace Monogame_Summative___Breakout
                 _spriteBatch.DrawString(tutorialFont, "There are some Power Ups that will pop up \nthroughout. Bounce the ball on them and you'll \ngain the specified power!", new Vector2(20, 170), Color.White);
                 paddle.Draw(_spriteBatch);
 
-                _spriteBatch.Draw(fiftyPowerUpTexture, fiftyPowerUpRect, Color.White);
-                _spriteBatch.Draw(hundredPowerUpTexture, hundredPowerUpRect, Color.White);
-                _spriteBatch.Draw(twoFiftyPowerUpTexture, twoFiftyPowerUpRect, Color.White);
-                _spriteBatch.Draw(fiveHundredPowerUpTexture, fiveHundredPowerUpRect, Color.White);
-                _spriteBatch.Draw(fastPowerUpTexture, fastPowerUpRect, Color.White);
-                _spriteBatch.Draw(slowPowerUpTexture, slowPowerUpRect, Color.White);
 
                 _spriteBatch.DrawString(instructionFont, "Press SPACE to go to the MAIN game", new Vector2(20, 550), Color.PaleTurquoise);
             }
@@ -357,15 +329,15 @@ namespace Monogame_Summative___Breakout
                     bricks.Draw(_spriteBatch);
                 }
 
-                if (fastPowerUp == true)
-                {
-                    _spriteBatch.Draw(fastPowerUpTexture, fastPowerUpRect, Color.White);
-                }
+                //if (fastPowerUp == true)
+                //{
+                //    _spriteBatch.Draw(fastPowerUpTexture, fastPowerUpRect, Color.White);
+                //}
 
-                if (slowPowerUp == true)
-                {
-                    _spriteBatch.Draw(slowPowerUpTexture, slowPowerUpRect, Color.White);
-                }
+                //if (slowPowerUp == true)
+                //{
+                //    _spriteBatch.Draw(slowPowerUpTexture, slowPowerUpRect, Color.White);
+                //}
 
                 ball.Draw(_spriteBatch);
                 paddle.Draw(_spriteBatch);
