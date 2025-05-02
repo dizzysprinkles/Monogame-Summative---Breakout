@@ -58,6 +58,7 @@ namespace Monogame_Summative___Breakout
         protected override void Initialize()
         {
             Window.Title = "Welcome to Breakout!";
+
             //Power Up Bools
             fastPowerUp = false;
             slowPowerUp = false;
@@ -151,12 +152,6 @@ namespace Monogame_Summative___Breakout
 
             //Item Textures
             ballTexture = Content.Load<Texture2D>("Images/ball");
-            fastPowerUpTexture = Content.Load<Texture2D>("Images/powerUpFast");
-            slowPowerUpTexture = Content.Load<Texture2D>("Images/powerUpSlow");
-            hundredPowerUpTexture = Content.Load<Texture2D>("Images/powerUp100");
-            fiftyPowerUpTexture = Content.Load<Texture2D>("Images/powerUp50");
-            twoFiftyPowerUpTexture = Content.Load<Texture2D>("Images/powerUp250");
-            fiveHundredPowerUpTexture = Content.Load<Texture2D>("Images/powerUp500");
 
             //Fonts
             titleFont = Content.Load<SpriteFont>("Fonts/TitleFont");
@@ -259,7 +254,7 @@ namespace Monogame_Summative___Breakout
                     slowPowerUp = false;
                 }
 
-                //ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, fastPowerUpRect, fastPowerUp, slowPowerUp, slowPowerUpRect, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
+                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 
                 bricks.RemoveBricks(hitBricks);
@@ -329,16 +324,6 @@ namespace Monogame_Summative___Breakout
                     bricks.Draw(_spriteBatch);
                 }
 
-                //if (fastPowerUp == true)
-                //{
-                //    _spriteBatch.Draw(fastPowerUpTexture, fastPowerUpRect, Color.White);
-                //}
-
-                //if (slowPowerUp == true)
-                //{
-                //    _spriteBatch.Draw(slowPowerUpTexture, slowPowerUpRect, Color.White);
-                //}
-
                 ball.Draw(_spriteBatch);
                 paddle.Draw(_spriteBatch);
             }
@@ -349,6 +334,8 @@ namespace Monogame_Summative___Breakout
                 _spriteBatch.Draw(endBackgroundTexture, window, Color.White);
 
                 _spriteBatch.DrawString(titleFont, "THE END", new Vector2(225, 250), Color.White);
+
+                _spriteBatch.DrawString(instructionFont, $"You scored {bricks.Score} points!", new Vector2(225, 500), Color.PaleTurquoise);
 
                 _spriteBatch.DrawString(instructionFont, "Press ESCAPE to Quit", new Vector2(225, 550), Color.PaleTurquoise);
             }

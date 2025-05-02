@@ -53,7 +53,7 @@ namespace Monogame_Summative___Breakout
 
 
 
-        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, Rectangle fastRect, bool fast, bool slow, Rectangle slowRect, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score /*, bool fifty, bool hundred, bool twoFifty, bool fiveHundred, Rectangle fiftyRect, Rectangle hundredRect, Rectangle twoFiftyRect, Rectangle fiveHundredRect*/) 
+        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score) 
         {
             _hitBricks.Clear();
 
@@ -78,19 +78,19 @@ namespace Monogame_Summative___Breakout
 
             }
 
-            if (futureY.Intersects(fastRect) && fast == true)
-            {
-                _fast = true;
-                bouncedY = true;
-                powerUp.Play();
-            }
+            //if (futureY.Intersects(fastRect) && fast == true)
+            //{
+            //    _fast = true;
+            //    bouncedY = true;
+            //    powerUp.Play();
+            //}
 
-            if (futureY.Intersects(slowRect) && slow == true)
-            {
-                _slow = true;
-                bouncedY = true;
-                powerUp.Play();
-            }
+            //if (futureY.Intersects(slowRect) && slow == true)
+            //{
+            //    _slow = true;
+            //    bouncedY = true;
+            //    powerUp.Play();
+            //}
 
 
             if (futureY.Top < 0)
@@ -132,19 +132,19 @@ namespace Monogame_Summative___Breakout
                 }
             }
 
-            if (futureX.Intersects(fastRect) && fast == true)
-            {
-                _fast = true;
-                bouncedX = true;
-                powerUp.Play();
-            }
+            //if (futureX.Intersects(fastRect) && fast == true)
+            //{
+            //    _fast = true;
+            //    bouncedX = true;
+            //    powerUp.Play();
+            //}
 
-            if (futureX.Intersects(slowRect) && slow == true)
-            {
-                _slow = true;
-                bouncedX = true;
-                powerUp.Play();
-            }
+            //if (futureX.Intersects(slowRect) && slow == true)
+            //{
+            //    _slow = true;
+            //    bouncedX = true;
+            //    powerUp.Play();
+            //}
 
 
             if (futureX.Right > _window.Right || futureX.Left < 0)
