@@ -163,9 +163,9 @@ namespace Monogame_Summative___Breakout
             bounceSoundInstance = bounceSound.CreateInstance();
             bounceSoundInstance.IsLooped = false;
 
-            deathSound = Content.Load<SoundEffect>("SoundFX/deathSound");
-            deathSoundInstance = deathSound.CreateInstance();
-            deathSoundInstance.IsLooped = false;
+            //deathSound = Content.Load<SoundEffect>("SoundFX/deathSound");
+            //deathSoundInstance = deathSound.CreateInstance();
+            //deathSoundInstance.IsLooped = false;
 
             powerUpSound = Content.Load<SoundEffect>("SoundFX/powerUp");
             powerUpSoundInstance = powerUpSound.CreateInstance();
