@@ -10,7 +10,7 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-
+    //TODO - need to fix requirements things for powerups... need to fix it so when it's hit it disappears
     enum Screen
     {
         Title,
@@ -212,6 +212,7 @@ namespace Monogame_Summative___Breakout
                     MediaPlayer.Stop();
                     MediaPlayer.Play(mainSong);
                     MediaPlayer.Volume = 0.3f;
+                    paddle.Bounds = new Rectangle(300, 550, 100, 25);
                     for (int i = 0; i < powerUpRects.Count; i++)
                     {
                         powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Height-20), 80, 20);
@@ -231,6 +232,7 @@ namespace Monogame_Summative___Breakout
                     MediaPlayer.Stop();
                     MediaPlayer.Play(mainSong);
                     MediaPlayer.Volume = 0.3f;
+                    paddle.Bounds = new Rectangle(300, 550, 100, 25);
                     for (int i = 0; i < powerUpRects.Count; i++)
                     {
                         powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Height - 20), 80, 20);
@@ -281,7 +283,7 @@ namespace Monogame_Summative___Breakout
                
                 for (int i = 0; i < powerUpRects.Count; i++)
                 {
-                    if (bricks.GetBricks.Count == powerUpRequirements[i] && !bricks.GetBricks.Contains(powerUpRects[i]))
+                    if (bricks.GetBricks.Count <= powerUpRequirements[i] && !bricks.GetBricks.Contains(powerUpRects[i]))
                     {
                         powerUpBools[i] = true;
                     }
