@@ -26,6 +26,10 @@ namespace Monogame_Summative___Breakout
             _window = window;
             _hitBricks = new List<Rectangle>();
             _powerUp = new List<bool>();
+            for (int i = 0; i < powerUpRects.Count; i++)
+            {
+                _powerUp.Add(false);
+            }
         }
 
         public List<bool> PowerUp
