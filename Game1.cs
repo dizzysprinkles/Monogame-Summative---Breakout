@@ -11,7 +11,6 @@ using System.Text.Encodings.Web;
 
 namespace Monogame_Summative___Breakout
 {
-    //TODO - need to fix requirements things for powerups... need to fix it so when it's hit it disappears
     enum Screen
     {
         Title,
@@ -434,28 +433,12 @@ namespace Monogame_Summative___Breakout
                 overlapping = false;
                 for (int i = 0; i < powerUpRects.Count; i++)
                 {
-                    Rectangle newRect = powerUpRects[i];
-
                     //brick check
                     if (bricks.Intersects(newRect))
                     {
-                        newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
+                        powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
                         overlapping = true;
-                  
                     }
-
-                    //// powerUp check
-                    //for (int j = 0; j < powerUpRects.Count; j++)
-                    //{
-                    //    if (i != j && powerUpRects[j].Intersects(newRect))
-                    //    {
-                    //        newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
-                    //        overlapping = true;
-                    //        break;
-                    //    }
-                    //}
-
-                    powerUpRects[i] = newRect;
                 }
 
             } while (overlapping) ;
