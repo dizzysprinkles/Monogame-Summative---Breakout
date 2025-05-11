@@ -58,11 +58,7 @@ namespace Monogame_Summative___Breakout
         public void Update(List<Rectangle> bricks, Paddle paddle, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score, List<Rectangle> powerUpRects, List<bool> powerUps)
         {
             _hitBricks.Clear();
-            _powerUp.Clear();
-            for (int i = 0; i < powerUpRects.Count; i++)
-            {
-                _powerUp.Add(false);
-            }
+            
 
             // Move the ball
             _location.Offset((int)_speed.X, (int)_speed.Y);
@@ -142,18 +138,18 @@ namespace Monogame_Summative___Breakout
                 {
                     Rectangle overlap = Rectangle.Intersect(_location, powerUpRects[i]);
 
-                    if (overlap.Width < overlap.Height)
+                    if (overlap.Width >= overlap.Height)
                     {
-                        _speed.X *= -1;
+                        _speed.Y *= -1;
+
                     }
                     else
                     {
-                        _speed.Y *= -1;
+                        _speed.X *= -1;
                     }
                     _powerUp[i] = true;
                     powerUp.Play();
                 }
-
             }
         }
 

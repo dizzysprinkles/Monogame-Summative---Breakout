@@ -98,7 +98,7 @@ namespace Monogame_Summative___Breakout
             //Loop - generates Bricks
             for (int x = 0; x < window.Width; x += 100)
             {
-                for (int y = 0; y < 363; y += 33)
+                for (int y = 0; y < 363; y += 33) 
                 {
                     brickRects.Add(new Rectangle(x, y, 100, 33));
                 }
@@ -110,7 +110,7 @@ namespace Monogame_Summative___Breakout
 
             for (int i = 0; i < powerUpRects.Count; i++)
             {
-                powerUpRequirements.Add(generator.Next(10, 81));
+                powerUpRequirements.Add(generator.Next(24, 81));
             }
 
             for (int i = 0; i < powerUpRects.Count; i++)
@@ -216,7 +216,7 @@ namespace Monogame_Summative___Breakout
                     paddle.Bounds = new Rectangle(300, 550, 100, 25);
                     for (int i = 0; i < powerUpRects.Count; i++)
                     {
-                        powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Height-20), 80, 20);
+                        powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
                     }
                     
                     screenState = Screen.Main;
@@ -236,7 +236,7 @@ namespace Monogame_Summative___Breakout
                     paddle.Bounds = new Rectangle(300, 550, 100, 25);
                     for (int i = 0; i < powerUpRects.Count; i++)
                     {
-                        powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, window.Height - 20), 80, 20);
+                        powerUpRects[i] = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
                     }
                     screenState = Screen.Main;
                 }
@@ -245,50 +245,54 @@ namespace Monogame_Summative___Breakout
             else if (screenState == Screen.Main)
             {
                 paddle.Update(currentKeyboardState, gameTime);
+                ball.Update(bricks.GetBricks, paddle, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance, powerUpRects, powerUpBools);
 
-                if (ball.PowerUp[0])
+                if (ball.PowerUp[0] && powerUpBools[0])
                 {
                     bricks.Score += 50;
                     powerUpBools[0] = false;
                 }
-                else if (ball.PowerUp[1])
+                else if (ball.PowerUp[1] && powerUpBools[1])
                 {
                     bricks.Score += 100;
                     powerUpBools[1] = false;
                 }
-                else if (ball.PowerUp[2])
+                else if (ball.PowerUp[2] && powerUpBools[2])
                 {
                     bricks.Score += 250;
                     powerUpBools[2] = false;
                 }
-                else if (ball.PowerUp[3])
+                else if (ball.PowerUp[3] && powerUpBools[3])
                 {
                     bricks.Score += 500;
                     powerUpBools[3] = false;
                 }
-                else if (ball.PowerUp[4])
+                else if (ball.PowerUp[4] && powerUpBools[4])
                 {
                     ball.Speed *= 1.5f;
                     powerUpBools[4] = false;
                 }
-                else if (ball.PowerUp[5])
+                else if (ball.PowerUp[5] && powerUpBools[5])
                 {
-                    ball.Speed /= 1.5f;
+                    ball.Speed /= 1.2f;
                     powerUpBools[5] = false;
                 }
 
-                ball.Update(bricks.GetBricks, paddle, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance, powerUpRects, powerUpBools);
+               
                 List<Rectangle> hitBricks = ball.HitBricks;
                 
                 bricks.RemoveBricks(hitBricks);
+
+                PowerUpCheck();
                
                 for (int i = 0; i < powerUpRects.Count; i++)
                 {
-                    if (bricks.GetBricks.Count <= powerUpRequirements[i] && !bricks.Intersects(powerUpRects[i]))
+                    if (bricks.GetBricks.Count == powerUpRequirements[i] && !ball.PowerUp[i])
                     {
                         powerUpBools[i] = true;
                     }
                 }
+                
 
 
                 if (ball.Speed == Vector2.Zero || bricks.GetBricks.Count == 0)
@@ -332,6 +336,10 @@ namespace Monogame_Summative___Breakout
                     for (int i = 0; i < brickRects.Count; i++)
                     {
                         brickTextures.Add(Content.Load<Texture2D>("Images/brick"));
+                    }
+                    for (int i = 0; i < powerUpRects.Count; i++)
+                    {
+                        powerUpRequirements.Add(generator.Next(24, 81));
                     }
                     bricks.Score = 0;
                     screenState = Screen.Title;
@@ -416,6 +424,42 @@ namespace Monogame_Summative___Breakout
 
             _spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        public void PowerUpCheck()
+        {
+            bool overlapping;
+            do
+            {
+                overlapping = false;
+                for (int i = 0; i < powerUpRects.Count; i++)
+                {
+                    Rectangle newRect = powerUpRects[i];
+
+                    //brick check
+                    if (bricks.Intersects(newRect))
+                    {
+                        newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
+                        overlapping = true;
+                        break;
+                    }
+
+                    // powerUp check
+                    for (int j = 0; j < powerUpRects.Count; j++)
+                    {
+                        if (i != j && powerUpRects[j].Intersects(newRect))
+                        {
+                            newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
+                            overlapping = true;
+                            break;
+                        }
+                    }
+
+                    powerUpRects[i] = newRect;
+                }
+
+            } while (overlapping) ;
+
         }
     }
 }
