@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
 using System.Text.Encodings.Web;
 
@@ -276,14 +277,14 @@ namespace Monogame_Summative___Breakout
                     powerUpBools[5] = false;
                 }
 
-                ball.Update(bricks.GetBricks, paddle, bricks.GetTextures, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance, powerUpRects, powerUpBools);
+                ball.Update(bricks.GetBricks, paddle, bounceSoundInstance, deathSoundInstance, powerUpSoundInstance, scoreSoundInstance, powerUpRects, powerUpBools);
                 List<Rectangle> hitBricks = ball.HitBricks;
                 
                 bricks.RemoveBricks(hitBricks);
                
                 for (int i = 0; i < powerUpRects.Count; i++)
                 {
-                    if (bricks.GetBricks.Count <= powerUpRequirements[i] && !bricks.GetBricks.Contains(powerUpRects[i]))
+                    if (bricks.GetBricks.Count <= powerUpRequirements[i] && !bricks.Intersects(powerUpRects[i]))
                     {
                         powerUpBools[i] = true;
                     }
@@ -302,9 +303,39 @@ namespace Monogame_Summative___Breakout
             //End
             else
             {
-                if (currentKeyboardState.IsKeyDown(Keys.Q) && prevKeyboardState.IsKeyUp(Keys.Q))
+                if (currentKeyboardState.IsKeyDown(Keys.Escape) && prevKeyboardState.IsKeyUp(Keys.Escape))
                 {
                     Exit();
+                }
+                if (currentKeyboardState.IsKeyDown(Keys.R) && prevKeyboardState.IsKeyUp(Keys.R))
+                {
+                    MediaPlayer.Stop();
+                    MediaPlayer.Volume = 0.8f;
+                    MediaPlayer.Play(introSong);
+                    Window.Title = "Welcome to Breakout!";
+                    brickColours.Clear();
+                    brickRects.Clear();
+                    brickTextures.Clear();
+                    ball.Speed = new Vector2(2, 2);
+                    ball.Location = new Rectangle(350, 500, 25, 25);
+                    for (int x = 0; x < window.Width; x += 100)
+                    {
+                        for (int y = 0; y < 363; y += 33)
+                        {
+                            brickRects.Add(new Rectangle(x, y, 100, 33));
+                        }
+                    }
+                    for (int i = 0; i < brickRects.Count; i++)
+                    {
+                        brickColours.Add(new Color((float)generator.NextDouble(), (float)generator.NextDouble(), (float)generator.NextDouble()));
+                    }
+                    for (int i = 0; i < brickRects.Count; i++)
+                    {
+                        brickTextures.Add(Content.Load<Texture2D>("Images/brick"));
+                    }
+                    bricks.Score = 0;
+                    screenState = Screen.Title;
+
                 }
             }
 
@@ -376,7 +407,9 @@ namespace Monogame_Summative___Breakout
 
                 _spriteBatch.DrawString(titleFont, "THE END", new Vector2(225, 250), Color.White);
 
-                _spriteBatch.DrawString(instructionFont, $"You scored {bricks.Score} points!", new Vector2(225, 500), Color.PaleTurquoise);
+                _spriteBatch.DrawString(instructionFont, $"You scored {bricks.Score} points!", new Vector2(225, 450), Color.White);
+
+                _spriteBatch.DrawString(instructionFont, "Press R to Restart", new Vector2(225, 500), Color.LightSeaGreen);
 
                 _spriteBatch.DrawString(instructionFont, "Press ESCAPE to Quit", new Vector2(225, 550), Color.PaleTurquoise);
             }

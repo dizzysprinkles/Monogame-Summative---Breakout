@@ -48,10 +48,14 @@ namespace Monogame_Summative___Breakout
             get { return _hitBricks; }
         }
 
+        public Rectangle Location
+        {
+            get { return _location; }
+            set { _location = value; }
+        }
 
 
-
-        public void Update(List<Rectangle> bricks, Paddle paddle, List<Texture2D> brickTextures, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score, List<Rectangle> powerUpRects, List<bool> powerUps) 
+        public void Update(List<Rectangle> bricks, Paddle paddle, SoundEffectInstance bounce, SoundEffectInstance death, SoundEffectInstance powerUp, SoundEffectInstance score, List<Rectangle> powerUpRects, List<bool> powerUps)
         {
             _hitBricks.Clear();
             _powerUp.Clear();
@@ -60,107 +64,97 @@ namespace Monogame_Summative___Breakout
                 _powerUp.Add(false);
             }
 
-            bool bouncedX = false;
-            bool bouncedY = false;
-            
+            // Move the ball
+            _location.Offset((int)_speed.X, (int)_speed.Y);
 
-            //Check vertical movement
-            Rectangle futureY = _location;
-            futureY.Offset(0, (int)_speed.Y);
-
-            foreach (Rectangle brick in bricks)
+            // Check for window collisions
+            if (_location.Left <= _window.Left || _location.Right >= _window.Right)
             {
-                if (futureY.Intersects(brick))
-                {
-                    _hitBricks.Add(brick);
-                    bouncedY = true;
-                    score.Play();
-                }
-
+                _speed.X *= -1;
+                bounce.Play();
             }
 
-            for (int i = 0; i < powerUpRects.Count; i++)
-            {
-                if (futureY.Intersects(powerUpRects[i]) && powerUps[i] == true)
-                {
-                    _powerUp[i] = true;
-                    bouncedY = true;
-                    powerUp.Play();
-                }
-            }
-           
-
-
-            if (futureY.Top < 0)
+            if (_location.Top <= _window.Top)
             {
                 bounce.Play();
-                bouncedY = true;
+                _speed.Y *= -1;
+                _location.Y = _window.Top;
             }
 
-            if (futureY.Bottom > _window.Bottom)
+            // Check for bottom collision 
+            if (_location.Bottom >= _window.Bottom)
             {
                 death.Play();
                 _speed = Vector2.Zero;
-                
-            }
-         
-            if (futureY.Intersects(paddle.Bounds))
-            {
-                bounce.Play();
-                bouncedY = true;
             }
 
-
-            if (bouncedY)
-                _speed.Y *= -1;
-
-            _location.Offset(0, (int)_speed.Y); // move after checking
-
-            //Check horizontal movement
-            Rectangle futureX = _location;
-            futureX.Offset((int)_speed.X, 0);
-
-            foreach (Rectangle brick in bricks)
+            // Check for paddle collision
+            if (_location.Intersects(paddle.Bounds))
             {
-                if (futureX.Intersects(brick) && !_hitBricks.Contains(brick))
+                Rectangle overlap = Rectangle.Intersect(_location, paddle.Bounds);
+
+                if (overlap.Width < overlap.Height)
                 {
-                    _hitBricks.Add(brick);
-                    bouncedX = true;
+                    if (_location.Center.X < paddle.Bounds.Center.X)
+                    {
+                        _location.X = paddle.Bounds.Left - _location.Width;
+                        _speed.X = -Math.Abs(_speed.X);
+                    }
+                    else
+                    {
+                        _location.X = paddle.Bounds.Right;
+                        _speed.X = Math.Abs(_speed.X);
+                    }
+                }
+                else
+                {
+                    _location.Y = paddle.Bounds.Top - _location.Height;
+                    _speed.Y *= -1;
+                }
+                bounce.Play();
+            }
+
+            // Check for brick collisions
+            for (int i = bricks.Count - 1; i >= 0; i--)
+            {
+                if (_location.Intersects(bricks[i]))
+                {
+                    Rectangle overlap = Rectangle.Intersect(_location, bricks[i]);
+
+                    if (overlap.Width < overlap.Height)
+                    {
+                        _speed.X *= -1;
+                    }
+                    else
+                    {
+                        _speed.Y *= -1;
+                    }
+
+                    _hitBricks.Add(bricks[i]);
                     score.Play();
+                    break; // one brick collision per update
                 }
             }
 
             for (int i = 0; i < powerUpRects.Count; i++)
             {
-                if (futureX.Intersects(powerUpRects[i]) && powerUps[i] == true)
+                if (_location.Intersects(powerUpRects[i]) && powerUps[i] == true)
                 {
+                    Rectangle overlap = Rectangle.Intersect(_location, powerUpRects[i]);
+
+                    if (overlap.Width < overlap.Height)
+                    {
+                        _speed.X *= -1;
+                    }
+                    else
+                    {
+                        _speed.Y *= -1;
+                    }
                     _powerUp[i] = true;
-                    bouncedX = true;
                     powerUp.Play();
                 }
+
             }
-
-
-            if (futureX.Right > _window.Right || futureX.Left < 0)
-            {
-                bouncedX = true;
-                bounce.Play();
-            }
-
-            if (futureX.Intersects(paddle.Bounds))
-            {
-                bouncedX = true;
-                bounce.Play();
-            }
-
-
-            if (bouncedX)
-            {
-                _speed.X *= -1;
-            }
-
-            _location.Offset((int)_speed.X, 0); // move after checking
-
         }
 
 

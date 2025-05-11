@@ -15,7 +15,7 @@ namespace Monogame_Summative___Breakout
         private List<Color> _colours;
         private int _score;
 
-        public Brick(List<Rectangle> locations, List<Texture2D> textures, List<Color>colours)
+        public Brick(List<Rectangle> locations, List<Texture2D> textures, List<Color> colours)
         {
             _locations = locations;
             _textures = textures;
@@ -28,10 +28,16 @@ namespace Monogame_Summative___Breakout
             get { return _locations; }
         }
 
-        public List<Texture2D> GetTextures
+        public bool Intersects(Rectangle brick)
         {
-            get { return _textures; }
+            for (int i = 0; i < _locations.Count; i++)
+            {
+                if (_locations[i].Intersects(brick))
+                    return true;
+            }
+            return false;
         }
+
 
         public int Score
         {
@@ -39,6 +45,7 @@ namespace Monogame_Summative___Breakout
             set { _score = value; }
         }
 
+       
 
         public void Draw(SpriteBatch spriteBatch)
         {
