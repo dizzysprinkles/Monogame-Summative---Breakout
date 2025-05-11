@@ -441,19 +441,19 @@ namespace Monogame_Summative___Breakout
                     {
                         newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
                         overlapping = true;
-                        break;
+                  
                     }
 
-                    // powerUp check
-                    for (int j = 0; j < powerUpRects.Count; j++)
-                    {
-                        if (i != j && powerUpRects[j].Intersects(newRect))
-                        {
-                            newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
-                            overlapping = true;
-                            break;
-                        }
-                    }
+                    //// powerUp check
+                    //for (int j = 0; j < powerUpRects.Count; j++)
+                    //{
+                    //    if (i != j && powerUpRects[j].Intersects(newRect))
+                    //    {
+                    //        newRect = new Rectangle(generator.Next(0, window.Width - 80), generator.Next(0, 480), 80, 20);
+                    //        overlapping = true;
+                    //        break;
+                    //    }
+                    //}
 
                     powerUpRects[i] = newRect;
                 }
